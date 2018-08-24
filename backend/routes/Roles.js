@@ -14,6 +14,16 @@ router.get('/', (req, res) => {
   });
 });
 
+router.post('/', (req, res) => {
+    db.Roles.create(req.body)
+    .then(function(data){
+        res.send(data);
+    })
+    .catch((err) => {
+        res.send(err);
+    });
+});
+
 router.put('/:id', (req, res) => {
     fetch('https://asudir-solr.asu.edu/asudir/directory/select?q='.concat(req.body.asuriteId, '&wt=json'))
     .then((data) => data.json())
