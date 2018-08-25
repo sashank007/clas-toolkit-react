@@ -47,13 +47,11 @@ export default class AddSubscriber extends Component {
           return res.json();
         })
         .then((data) => {
-          console.log(data);
           this.setState({showMessage: true, error: false}, () => {
             this.props.updateRoles({ showMessage: false, error: false, message: '' });
           });
         })
         .catch((err) => {
-          console.log(err);
           this.setState({showMessage: true, error: true});
         });
       });

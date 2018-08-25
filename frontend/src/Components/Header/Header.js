@@ -20,7 +20,8 @@ import { styles } from './Styles/Header'
 class Header extends React.Component {
   state = {
     open: false,
-    routes: [],
+    currentUser: {},
+    tools: [],
   };
 
   handleDrawerOpen = () => {
@@ -31,10 +32,21 @@ class Header extends React.Component {
     this.setState({ open: false });
   };
 
-  componentWillMount() {
+  fetchTools() {
     fetch('/api/backend/tools')
     .then((data) => data.json())
-    .then((routes) => this.setState({routes}));
+    .then((tools) => this.setState({tools}));
+  }
+
+  fetchCurrentUser() {
+    fetch('/api/backend/currentuser')
+    .then((data) => data.json())
+    .then((currentUser) => this.setState({currentUser}));
+  }
+
+  componentWillMount() {
+    this.fetchCurrentUser();
+    this.fetchTools();
   }
 
   render() {
@@ -58,7 +70,7 @@ class Header extends React.Component {
             <Typography variant="title" color="inherit" noWrap>
               CLAS Tools
             </Typography>
-            <UserMenu />
+            <UserMenu currentUser={this.state.currentUser} />
           </Toolbar>
         </AppBar>
         <Drawer
@@ -75,7 +87,7 @@ class Header extends React.Component {
             </IconButton>
           </div>
           <Divider />
-          <List><Tools routes={this.state.routes}/></List>
+          <List><Tools tools={this.state.tools}/></List>
         </Drawer>
         <Main />
       </div>

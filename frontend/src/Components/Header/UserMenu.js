@@ -22,7 +22,7 @@ class UserMenu extends Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, currentUser } = this.props;
     const { anchorEl } = this.state;
 
     return (
@@ -32,7 +32,7 @@ class UserMenu extends Component {
           aria-haspopup="true"
           onClick={this.handleClick}
         >
-          <Avatar alt="User" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiz2cQ2BSlhBTnPT_wPa36dYaaEbmJfjj1ldCeneKya3FozYPWCg" className={classNames(classes.avatar, classes.bigAvatar)} />
+          <Avatar alt="User" src={currentUser.docs ? currentUser.docs[0].photoUrl : ''} className={classNames(classes.avatar, classes.bigAvatar)} />
         </Button>
         <Menu
           id="simple-menu"

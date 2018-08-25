@@ -26,7 +26,7 @@ class Tools extends Component {
   }
 
   render() {
-    const toolItems = this.props.routes.map((item, i) =>
+    const toolItems = this.props.tools.map((item, i) =>
       <ListItem button url={item.url} onClick={this.setRedirect} key={i}>
         <ListItemIcon>
           <InboxIcon />

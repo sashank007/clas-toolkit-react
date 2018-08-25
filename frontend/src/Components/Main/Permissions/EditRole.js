@@ -48,11 +48,9 @@ class EditRole extends Component {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
         this.props.updateRoles({showMessage: true, error: false, message: "Role changed to ".concat(this.state.value)});
       })
       .catch((err) => {
-        console.log(err);
         this.props.updateRoles({showMessage: true, error: true, message: "Error occured while saving"});
       });
     });
@@ -61,6 +59,7 @@ class EditRole extends Component {
   handleDelete = () => {
     this.setState({ open: false }, () => {
       fetch('/api/backend/roles/'.concat(this.props.currentRole.name), {
+        mode: 'cors',
         method: "delete",
         headers: {
           'Accept': 'application/json',
@@ -76,11 +75,9 @@ class EditRole extends Component {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
         this.props.updateRoles({showMessage: true, error: false, message: "Successfully deleted"});
       })
       .catch((err) => {
-        console.log(err);
         this.props.updateRoles({showMessage: true, error: true, message: "Error occured while deleting"});
       });
     });
