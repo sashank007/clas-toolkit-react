@@ -7,18 +7,18 @@ import { Route } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { styles } from './Styles/Home';
 
+const popState = (event) => {
+  window.location.reload();
+};
+window.addEventListener('popstate', popState);
+
 class Home extends Component {
   state = {
     tools: [],
   };
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ tools: nextProps.tools }, () => window.history.replaceState(this.state, '', '/'));
-  }
-
-  componentWillMount() {
-    if (window.history.state)
-      this.setState({tools: window.history.state.tools});
+    this.setState({ tools: nextProps.tools });
   }
 
   render() {

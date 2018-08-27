@@ -39,17 +39,24 @@ class Header extends React.Component {
     .then((tools) => this.setState({tools}));
   }
 
-  fetchRoles() {
+  fetchToolsAndRoles() {
     fetch('/api/backend/roles')
     .then((data) => data.json())
     .then((roles) => this.setState({roles}, () => {
-      const currentRole = this.state.roles.find((role) => {
+      var currentRole = this.state.roles.find((role) => {
         return role.members.find((member) => member.asurite && this.state.currentUser.docs && member.asurite === this.state.currentUser.docs[0].asuriteId);
       });
-      if (currentRole) {
-        const tools = this.state.tools.filter((tool) => currentRole.permissions.indexOf(tool.name) > -1);
-        this.setState({tools});
+      if (!currentRole) {
+        currentRole = this.state.roles.find((role) => {
+          return role.name === 'subscriber';
+        });
       }
+      fetch('/api/backend/tools')
+      .then((data) => data.json())
+      .then((toolList) => {
+        const tools = toolList.filter((tool) => currentRole.permissions.indexOf(tool.name) > -1);
+        this.setState({tools});
+      });
     }));
   }
 
@@ -61,8 +68,7 @@ class Header extends React.Component {
 
   componentWillMount() {
     this.fetchCurrentUser();
-    this.fetchTools();
-    this.fetchRoles();
+    this.fetchToolsAndRoles();
   }
 
   render() {
@@ -97,7 +103,7 @@ class Header extends React.Component {
           open={this.state.open}
         >
           <div className={classes.toolbar}>
-            <a href="/"><img alt="ASU" src="https://www.asu.edu/asuthemes/4.6/assets/full_logo.png" className={classes.logo}/></a>
+            <a href="/"><img alt="ASU" src="https://brandguide.asu.edu/sites/default/files/endorsed/color/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png" className={classes.logo}/></a>
             <IconButton onClick={this.handleDrawerClose}>
               {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
             </IconButton>
