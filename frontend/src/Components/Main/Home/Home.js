@@ -13,7 +13,12 @@ class Home extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ tools: nextProps.tools });
+    this.setState({ tools: nextProps.tools }, () => window.history.replaceState(this.state, '', '/'));
+  }
+
+  componentWillMount() {
+    if (window.history.state)
+      this.setState({tools: window.history.state.tools});
   }
 
   render() {

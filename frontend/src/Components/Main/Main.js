@@ -17,7 +17,6 @@ class Main extends Component {
     this.setState({ tools: nextProps.tools });
   }
 
-
   render() {
     const { classes } = this.props;
 
@@ -26,9 +25,9 @@ class Main extends Component {
         <div className={classes.toolbar} />
         <Switch>
           <Route exact path="/" render={(props) => <Home tools={this.state.tools}/>} />
-          { this.state.tools.filter(tool => tool.url === "/webaudit").length > 0 && <Route exact path="/webaudit" component={WebAudit} /> }
-          { this.state.tools.filter(tool => tool.url === "/isearch").length > 0 && <Route exact path="/isearch" component={ISearch} /> }
-          { this.state.tools.filter(tool => tool.url === "/permissions").length > 0 && <Route exact path="/permissions" component={Permissions} /> }
+          { this.state.tools.filter(tool => tool.name === "Web Audit").length > 0 && <Route exact path="/webaudit" component={WebAudit} /> }
+          { this.state.tools.filter(tool => tool.name === "ISearch").length > 0 && <Route exact path="/isearch" component={ISearch} /> }
+          { this.state.tools.filter(tool => tool.name === "Permissions").length > 0 && <Route exact path="/permissions" component={Permissions} /> }
         </Switch>
       </main>
     );
