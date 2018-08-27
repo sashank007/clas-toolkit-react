@@ -29,7 +29,7 @@ class Tool extends Component {
     const { classes, name, description, icon, url } = this.props;
 
     return (
-      <div>
+      <div url={url}>
         <Card className={classNames(classes.card, this.state.isSelected ? classes.active : classes.inactive)} url={url}>
           <CardContent url={url}>
             <ToolIcon icon={icon} className={classes.icon} url={url} />

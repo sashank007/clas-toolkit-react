@@ -24,7 +24,7 @@ class Home extends Component {
       .map((tool) =>
       <CardActions key={tool.rank}>
         <Route render={({history}) => (
-          <Button size="small" className={classes.tool} onClick={(event) => { history.push(event.target.getAttribute("url")) }} >
+          <Button size="small" className={classes.tool} url={tool.url} onClick={(event) => { event.target.getAttribute("url") && history.push(event.target.getAttribute("url")) }} >
             <Tool name={tool.name} description={tool.description} icon={tool.icon} url={tool.url} />
           </Button>
         )} />
