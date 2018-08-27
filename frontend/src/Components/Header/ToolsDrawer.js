@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -11,37 +11,26 @@ class ToolsDrawer extends Component {
     route: '/',
   }
 
-  setRedirect = (event) => {
-    const route = event.currentTarget.getAttribute("url");
-    route !== this.state.route && this.setState({
-      redirect: true,
-      route: route,
-    })
-  }
-
-  renderRedirect = () => {
-    if (this.state.redirect) {
-      return <Redirect to={this.state.route} />
-    }
-  }
-
   render() {
     const toolItems = this.props.tools
       .sort((a, b) => a.rank > b.rank)
       .map((tool, i) =>
-        <ListItem button url={tool.url} onClick={this.setRedirect} key={i}>
-          <ListItemIcon>
-            <SvgIcon >
-              <path d={tool.icon} />
-            </SvgIcon>
-          </ListItemIcon>
-          <ListItemText primary={tool.name} />
-        </ListItem>
+      <div key={i}>
+        <Route render={({history}) => (
+          <ListItem button url={tool.url} onClick={(event) => { event.target.getAttribute("url") && history.push(event.target.getAttribute("url")) }}>
+            <ListItemIcon url={tool.url}>
+              <SvgIcon url={tool.url}>
+                <path d={tool.icon} url={tool.url} />
+              </SvgIcon>
+            </ListItemIcon>
+            <ListItemText primary={tool.name} url={tool.url} />
+          </ListItem>
+        )} />
+      </div>
     );
 
     return (
       <div>
-        {this.renderRedirect()}
         {toolItems}
       </div>
     );
