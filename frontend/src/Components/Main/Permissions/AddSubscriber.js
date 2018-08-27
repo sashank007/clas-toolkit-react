@@ -30,30 +30,41 @@ export default class AddSubscriber extends Component {
       this.setState({ showMessage: true, error: true });
     }
     else {
-      this.setState({ showMessage: false }, () => {
-        fetch('/api/backend/roles/subscriber', {
-          method: "put",
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            asuriteId: this.state.asuriteId,
-          })
-        })
-        .then((res) => {
-          if(res.status === 500)
-            throw new Error(res);
-          return res.json();
-        })
-        .then((data) => {
-          this.setState({showMessage: true, error: false}, () => {
-            this.props.updateRoles({ showMessage: false, error: false, message: '' });
-          });
-        })
-        .catch((err) => {
-          this.setState({showMessage: true, error: true});
+      fetch('/api/backend/roles/')
+      .then((data) => data.json())
+      .then((roles) => {
+        const role = roles.find((role) => {
+          return role.members.find((member) => member.asurite && this.state.asuriteId && member.asurite === this.state.asuriteId);
         });
+        if (!role) {
+          this.setState({ showMessage: false }, () => {
+            fetch('/api/backend/roles/subscriber', {
+              method: "put",
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                asuriteId: this.state.asuriteId,
+              })
+            })
+            .then((res) => {
+              if(res.status === 500)
+                throw new Error(res);
+              return res.json();
+            })
+            .then((data) => {
+              this.setState({showMessage: true, error: false}, () => {
+                this.props.updateRoles({ showMessage: false, error: false, message: '' });
+              });
+            })
+            .catch((err) => {
+              this.setState({showMessage: true, error: true});
+            });
+          });
+        } else {
+          this.setState({showMessage: true, error: true});
+        }
       });
     }
   }
