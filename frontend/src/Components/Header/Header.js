@@ -33,42 +33,33 @@ class Header extends React.Component {
     this.setState({ open: false });
   };
 
-  fetchTools() {
-    fetch('/api/backend/tools')
+  fetchData() {
+    fetch('/api/backend/currentuser')
     .then((data) => data.json())
-    .then((tools) => this.setState({tools}));
-  }
-
-  fetchToolsAndRoles() {
-    fetch('/api/backend/roles')
-    .then((data) => data.json())
-    .then((roles) => this.setState({roles}, () => {
-      var currentRole = this.state.roles.find((role) => {
-        return role.members.find((member) => member.asurite && this.state.currentUser.docs && member.asurite === this.state.currentUser.docs[0].asuriteId);
-      });
-      if (!currentRole) {
-        currentRole = this.state.roles.find((role) => {
-          return role.name === 'subscriber';
-        });
-      }
-      fetch('/api/backend/tools')
+    .then((currentUser) => this.setState({currentUser}, () => {
+      fetch('/api/backend/roles')
       .then((data) => data.json())
-      .then((toolList) => {
-        const tools = toolList.filter((tool) => currentRole.permissions.indexOf(tool.name) > -1);
-        this.setState({tools});
-      });
+      .then((roles) => this.setState({roles}, () => {
+        var currentRole = this.state.roles.find((role) => {
+          return role.members.find((member) => member.asurite && this.state.currentUser.docs && member.asurite === this.state.currentUser.docs[0].asuriteId);
+        });
+        if (!currentRole) {
+          currentRole = this.state.roles.find((role) => {
+            return role.name === 'subscriber';
+          });
+        }
+        fetch('/api/backend/tools')
+        .then((data) => data.json())
+        .then((toolList) => {
+          const tools = toolList.filter((tool) => currentRole.permissions.indexOf(tool.name) > -1);
+          this.setState({tools});
+        });
+      }));
     }));
   }
 
-  fetchCurrentUser() {
-    fetch('/api/backend/currentuser')
-    .then((data) => data.json())
-    .then((currentUser) => this.setState({currentUser}));
-  }
-
   componentWillMount() {
-    this.fetchCurrentUser();
-    this.fetchToolsAndRoles();
+    this.fetchData();
   }
 
   render() {
