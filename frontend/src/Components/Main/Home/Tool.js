@@ -26,17 +26,17 @@ class Tool extends Component {
   }
 
   render() {
-    const { classes, name, description, icon, url } = this.props;
+    const { classes, name, description, icon } = this.props;
 
     return (
-      <div url={url}>
-        <Card className={classNames(classes.card, this.state.isSelected ? classes.active : classes.inactive)} url={url}>
-          <CardContent url={url}>
-            <ToolIcon icon={icon} className={classes.icon} url={url} />
-            <Typography className={classes.title} variant="title" url={url}>
+      <div>
+        <Card className={classNames(classes.card, this.state.isSelected ? classes.active : classes.inactive)}>
+          <CardContent>
+            <ToolIcon icon={icon} className={classes.icon} />
+            <Typography className={classes.title} variant="title">
               {name}
             </Typography>
-            <Typography className={classes.description} variant="caption" url={url}>
+            <Typography className={classes.description} variant="caption">
               {description}
             </Typography>
           </CardContent>

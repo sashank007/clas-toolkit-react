@@ -21,12 +21,12 @@ class Role extends Component {
 
     return (
       <div>
-        <Card className={classNames(classes.card, this.state.isSelected ? classes.active : classes.inactive)} role={name}>
-          <CardContent role={name}>
-            <Typography className={classes.title} color="textSecondary" role={name}>
+        <Card className={classNames(classes.card, this.state.isSelected ? classes.active : classes.inactive)}>
+          <CardContent>
+            <Typography className={classes.title} color="textSecondary">
               {name}
             </Typography>
-            <Typography className={classes.count} variant="headline" component="h1" role={name}>
+            <Typography className={classes.count} variant="headline" component="h1">
               {count}
             </Typography>
           </CardContent>

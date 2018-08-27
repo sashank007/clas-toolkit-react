@@ -18,10 +18,6 @@ class Permissions extends Component {
     message: '',
   };
 
-  handleClick = (event) => {
-    this.setState({ selectedRole: event.target.getAttribute("role"), showMessage: false, error: false, message: '' });
-  };
-
   updateRoles = (obj) => {
     this.setState({ showMessage: obj.showMessage, error: obj.error, message: obj.message });
     fetch('/api/backend/roles')
@@ -43,7 +39,7 @@ class Permissions extends Component {
       .sort((a, b) => a.rank > b.rank)
       .map((role) =>
       <CardActions key={role.rank}>
-        <Button size="small" className={classes.role} onClick={this.handleClick}>
+        <Button size="small" className={classes.role} onClick={() => this.setState({ selectedRole: role.name, showMessage: false, error: false, message: '' })}>
           <Role name={role.name} count={role.members.length} isSelected={role.name === this.state.selectedRole ? true : false} />
         </Button>
       </CardActions>
