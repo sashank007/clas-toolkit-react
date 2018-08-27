@@ -3,9 +3,9 @@ import { Redirect } from 'react-router-dom'
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
+import SvgIcon from '@material-ui/core/SvgIcon';
 
-class Tools extends Component {
+class ToolsDrawer extends Component {
   state = {
     redirect: false,
     route: '/',
@@ -13,7 +13,7 @@ class Tools extends Component {
 
   setRedirect = (event) => {
     const route = event.currentTarget.getAttribute("url");
-    this.setState({
+    route !== this.state.route && this.setState({
       redirect: true,
       route: route,
     })
@@ -26,13 +26,17 @@ class Tools extends Component {
   }
 
   render() {
-    const toolItems = this.props.tools.map((item, i) =>
-      <ListItem button url={item.url} onClick={this.setRedirect} key={i}>
-        <ListItemIcon>
-          <InboxIcon />
-        </ListItemIcon>
-        <ListItemText primary={item.name} />
-      </ListItem>
+    const toolItems = this.props.tools
+      .sort((a, b) => a.rank > b.rank)
+      .map((tool, i) =>
+        <ListItem button url={tool.url} onClick={this.setRedirect} key={i}>
+          <ListItemIcon>
+            <SvgIcon >
+              <path d={tool.icon} />
+            </SvgIcon>
+          </ListItemIcon>
+          <ListItemText primary={tool.name} />
+        </ListItem>
     );
 
     return (
@@ -44,4 +48,4 @@ class Tools extends Component {
   }
 }
 
-export default Tools;
+export default ToolsDrawer;

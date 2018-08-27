@@ -1,13 +1,48 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
+import CardActions from '@material-ui/core/CardActions';
+import Tool from './Tool';
+import { Route } from 'react-router-dom';
+import { withStyles } from '@material-ui/core/styles';
+import { styles } from './Styles/Home';
 
-class Home extends React.Component {
+class Home extends Component {
+  state = {
+    tools: [],
+  };
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ tools: nextProps.tools });
+  }
+
   render() {
+    const { classes } = this.props;
+
+    const cards = this.state.tools
+      .sort((a, b) => a.rank > b.rank)
+      .map((tool) =>
+      <CardActions key={tool.rank}>
+        <Route render={({history}) => (
+          <Button size="small" className={classes.tool} onClick={(event) => { history.push(event.target.getAttribute("url")) }} >
+            <Tool name={tool.name} description={tool.description} icon={tool.icon} url={tool.url} />
+          </Button>
+        )} />
+      </CardActions>
+    );
+
     return (
       <div>
-        <p>Welcome to CLAS Tools</p>
+        <div className={classes.tools}>
+          {cards}
+        </div>
       </div>
     );
   }
 }
 
-export default Home;
+Home.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(Home);

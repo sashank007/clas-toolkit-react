@@ -12,7 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import Tools from './Tools';
+import ToolsDrawer from './ToolsDrawer';
 import Main from '../Main/Main';
 import UserMenu from './UserMenu'
 import { styles } from './Styles/Header'
@@ -22,6 +22,7 @@ class Header extends React.Component {
     open: false,
     currentUser: {},
     tools: [],
+    roles: [],
   };
 
   handleDrawerOpen = () => {
@@ -38,6 +39,20 @@ class Header extends React.Component {
     .then((tools) => this.setState({tools}));
   }
 
+  fetchRoles() {
+    fetch('/api/backend/roles')
+    .then((data) => data.json())
+    .then((roles) => this.setState({roles}, () => {
+      const currentRole = this.state.roles.find((role) => {
+        return role.members.find((member) => member.asurite && this.state.currentUser.docs && member.asurite === this.state.currentUser.docs[0].asuriteId);
+      });
+      if (currentRole) {
+        const tools = this.state.tools.filter((tool) => currentRole.permissions.indexOf(tool.name) > -1);
+        this.setState({tools});
+      }
+    }));
+  }
+
   fetchCurrentUser() {
     fetch('/api/backend/currentuser')
     .then((data) => data.json())
@@ -47,6 +62,7 @@ class Header extends React.Component {
   componentWillMount() {
     this.fetchCurrentUser();
     this.fetchTools();
+    this.fetchRoles();
   }
 
   render() {
@@ -87,9 +103,9 @@ class Header extends React.Component {
             </IconButton>
           </div>
           <Divider />
-          <List><Tools tools={this.state.tools}/></List>
+          <List><ToolsDrawer tools={this.state.tools} /></List>
         </Drawer>
-        <Main />
+        <Main tools={this.state.tools} />
       </div>
     );
   }

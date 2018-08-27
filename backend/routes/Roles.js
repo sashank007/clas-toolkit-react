@@ -36,7 +36,7 @@ router.put('/:id', cas.bounce, (req, res) => {
       { $push: { members: {
             id: data.response.docs[0].eid,
             name: data.response.docs[0].firstName.concat(" ", data.response.docs[0].lastName),
-            department: data.response.docs[0].departments[0],
+            department: data.response.docs[0].primaryDepartment,
             email: data.response.docs[0].emailAddress,
             asurite: data.response.docs[0].asuriteId,
             primaryTitle: data.response.docs[0].primaryTitle,
