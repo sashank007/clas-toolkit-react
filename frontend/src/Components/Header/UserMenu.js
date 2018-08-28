@@ -6,12 +6,18 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import PersonIcon from '@material-ui/icons/Person';
 import { styles } from './Styles/Header'
 
 class UserMenu extends Component {
   state = {
     anchorEl: null,
+    imageError: false,
   };
+
+  componentWillMount() {
+    this.setState({imageError: false});
+  }
 
   handleClick = event => {
     this.setState({ anchorEl: event.currentTarget });
@@ -20,6 +26,10 @@ class UserMenu extends Component {
   handleClose = (event) => {
     this.setState({ anchorEl: null });
   };
+
+  onSrcError = (event) => {
+    this.setState({imageError: true});
+  }
 
   render() {
     const { classes, currentUser } = this.props;
@@ -32,7 +42,9 @@ class UserMenu extends Component {
           aria-haspopup="true"
           onClick={this.handleClick}
         >
-          <Avatar alt="User" src={currentUser.docs ? currentUser.docs[0].photoUrl : ''} className={classNames(classes.avatar, classes.bigAvatar)} />
+          <Avatar alt="User" src={currentUser.docs ? currentUser.docs[0].photoUrl : ''} className={classNames(classes.avatar, classes.bigAvatar)} onError={this.onSrcError}>
+            {this.state.imageError && <PersonIcon />}
+          </Avatar>
         </Button>
         <Menu
           id="simple-menu"

@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import Avatar from '@material-ui/core/Avatar';
 import EditRole from './EditRole';
 import Paper from '@material-ui/core/Paper';
+import PersonIcon from '@material-ui/icons/Person';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -26,10 +27,15 @@ const CustomTableCell = withStyles(theme => ({
 class MemberTable extends Component {
   state = {
     role: this.props.role,
+    imageError: false,
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ role: nextProps.role });
+    this.setState({ role: nextProps.role, imageError: false });
+  }
+
+  onSrcError = (event) => {
+    this.setState({imageError: true});
   }
 
   render() {
@@ -55,7 +61,9 @@ class MemberTable extends Component {
                   <TableRow className={classes.row} key={row.id}>
                     <CustomTableCell className={classes.cell}>
                       <div className={classes.name}>
-                        <Avatar alt="User" src={row.photoUrl} className={classNames(classes.avatar, classes.bigAvatar)}/>
+                        <Avatar alt="User" src={row.photoUrl} className={classNames(classes.avatar, classes.bigAvatar)} onError={this.onSrcError}>
+                          {this.state.imageError && <PersonIcon />}
+                        </Avatar>
                         <div>{row.name}</div>
                       </div>
                     </CustomTableCell>
