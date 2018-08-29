@@ -25,6 +25,10 @@ export const styles = (theme) => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
+  bigAvatar: {
+    width: 50,
+    height: 50,
+  },
   menuButton: {
     marginLeft: 12,
     marginRight: 36,
@@ -51,6 +55,38 @@ export const styles = (theme) => ({
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing.unit * 9,
     },
+  },
+  logout: {
+    marginLeft: 5,
+  },
+  logoutIcon: {
+    color: '#5C6670',
+  },
+  menuList: {
+    paddingTop: 0,
+    paddingBottom: 0,
+  },
+  profile: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  profileContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginLeft: 10,
+  },
+  profileMenuItem: {
+    paddingBottom: 25,
+    paddingTop: 25,
+    paddingRight: 50,
+  },
+  name: {
+    fontSize: 18,
+    marginBottom: -10,
+  },
+  email: {
+    fontSize: 12,
+    color: '#5C6670',
   },
   toolbar: {
     display: 'flex',

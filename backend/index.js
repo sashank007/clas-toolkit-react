@@ -5,6 +5,7 @@ var express = require("express"),
     Tools = require('./routes/Tools'),
     Roles = require('./routes/Roles'),
     CurrentUser = require('./routes/CurrentUser'),
+    Logout = require('./routes/Logout'),
     port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
@@ -19,6 +20,7 @@ app.use( session({
 app.use('/api/backend/tools', Tools);
 app.use('/api/backend/roles', Roles);
 app.use('/api/backend/currentuser', CurrentUser);
+app.use('/api/backend/logout', Logout);
 
 app.listen(port, function(){
     console.log("Server is running on port " + port);
