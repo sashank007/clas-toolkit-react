@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ISearch from './ISearch/ISearch';
+import OnBoarding from './OnBoarding/OnBoarding';
 import Permissions from './Permissions/Permissions';
 import WebAudit from './WebAudit/WebAudit';
 import Home from './Home/Home';
@@ -28,6 +29,7 @@ class Main extends Component {
           { this.state.tools.filter(tool => tool.name === "Web Audit").length > 0 && <Route exact path="/webaudit" component={WebAudit} /> }
           { this.state.tools.filter(tool => tool.name === "ISearch").length > 0 && <Route exact path="/isearch" component={ISearch} /> }
           { this.state.tools.filter(tool => tool.name === "Permissions").length > 0 && <Route exact path="/permissions" component={Permissions} /> }
+          { this.state.tools.filter(tool => tool.name === "OnBoardingOffBoarding").length > 0 && <Route exact path="/onboarding" component={OnBoarding} /> }
         </Switch>
       </main>
     );

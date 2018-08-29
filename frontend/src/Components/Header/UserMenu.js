@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -60,7 +61,7 @@ class UserMenu extends Component {
           onClick={this.handleToggle}
         >
           <Avatar alt="User" src={currentUser.docs && currentUser.docs[0].photoUrl} onError={this.onSrcError}>
-            {this.state.imageError && <PersonIcon />}
+            {this.state.imageError && <AccountCircle />}
           </Avatar>
         </Button>
         <Popper open={open} anchorEl={this.anchorEl} transition disablePortal>
