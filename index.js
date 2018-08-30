@@ -1,4 +1,5 @@
 var express = require("express"),
+    sslRedirect = require('heroku-ssl-redirect'),
     app = express(),
     session = require('express-session'),
     bodyParser = require('body-parser'),
@@ -9,6 +10,8 @@ var express = require("express"),
     path = require("path"),
     port = process.env.PORT || 5000;
 
+
+app.use(sslRedirect());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
