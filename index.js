@@ -7,6 +7,8 @@ var express = require("express"),
     Roles = require('./routes/Roles'),
     CurrentUser = require('./routes/CurrentUser'),
     Logout = require('./routes/Logout'),
+    Authentication = require('../middleware/Authentication'),
+    config = require('../middleware/config'),
     path = require("path"),
     port = process.env.PORT || 5000;
 
