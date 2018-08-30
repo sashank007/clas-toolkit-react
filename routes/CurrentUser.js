@@ -6,7 +6,7 @@ var express = require('express'),
     require('es6-promise').polyfill();
     require('isomorphic-fetch');
 
-router.get('/', cas.bounce, (req, res) => {
+router.get('/', cas.block, (req, res) => {
   fetch('https://asudir-solr.asu.edu/asudir/directory/select?q='.concat(req.session.cas_user, '&wt=json'))
   .then((data) => data.json())
   .then((currentUser) => res.send(currentUser.response))
