@@ -17,6 +17,9 @@ app.use( session({
   saveUninitialized : true
 }));
 
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'frontend/build')));
+
 app.use('/api/backend/tools', Tools);
 app.use('/api/backend/roles', Roles);
 app.use('/api/backend/currentuser', CurrentUser);
