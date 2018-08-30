@@ -24,6 +24,12 @@ app.use( session({
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'frontend/build')));
 
+app.get(/^(.+)$/, cas.block, function(req, res){
+   console.log('static file request : ' + req.params[0]);
+   res.sendFile( __dirname + req.params[0]);
+});
+
+
 app.use('/api/backend/tools', Tools);
 app.use('/api/backend/roles', Roles);
 app.use('/api/backend/currentuser', CurrentUser);
