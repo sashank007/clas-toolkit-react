@@ -11,9 +11,10 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4"
   },
-  "proxy": "http://localhost:3001",
+  "proxy": "http://localhost:5000",
   "scripts": {
-    "start": "concurrently --kill-others \"PORT=3001 node ../backend/index.js\" \"react-scripts start\"",
+    "start": "react-scripts start",
+    "dev": "concurrently --kill-others \"node ../index.js\" \"react-scripts start\"",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"

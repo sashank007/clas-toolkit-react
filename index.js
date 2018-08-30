@@ -6,7 +6,7 @@ var express = require("express"),
     Roles = require('./routes/Roles'),
     CurrentUser = require('./routes/CurrentUser'),
     Logout = require('./routes/Logout'),
-    port = process.env.PORT || 3000;
+    port = process.env.PORT || 5000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
