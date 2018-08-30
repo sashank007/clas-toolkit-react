@@ -9,6 +9,7 @@ var express = require("express"),
     Logout = require('./routes/Logout'),
     Authentication = require('./middleware/Authentication'),
     config = require('./middleware/config'),
+    cas = Authentication.getInstance(config),
     path = require("path"),
     port = process.env.PORT || 5000;
 
