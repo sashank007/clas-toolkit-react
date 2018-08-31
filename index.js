@@ -27,16 +27,17 @@ app.use( session({
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'frontend/build')));
 
-app.get(/^(.+)$/, cas.bounce, function(req, res){
-   console.log('static file request : ' + req.params[0]);
-   res.sendFile( __dirname + req.params[0]);
-});
-
 
 app.use('/api/backend/tools', Tools);
 app.use('/api/backend/roles', Roles);
 app.use('/api/backend/currentuser', CurrentUser);
 app.use('/api/backend/logout', Logout);
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', cas.bounce,  (req, res) => {
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
 
 app.listen(port, function(){
     console.log("Server is running on port " + port);
