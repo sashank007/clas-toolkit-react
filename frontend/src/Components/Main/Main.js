@@ -25,7 +25,7 @@ class Main extends Component {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Switch>
-          <Route exact path="/" render={(props) => <Home tools={this.state.tools}/>} />
+          <Route exact path="/dash" render={(props) => <Home tools={this.state.tools}/>} />
           { this.state.tools.filter(tool => tool.name === "Web Audit").length > 0 && <Route exact path="/webaudit" component={WebAudit} /> }
           { this.state.tools.filter(tool => tool.name === "ISearch").length > 0 && <Route exact path="/isearch" component={ISearch} /> }
           { this.state.tools.filter(tool => tool.name === "Permissions").length > 0 && <Route exact path="/permissions" component={Permissions} /> }
