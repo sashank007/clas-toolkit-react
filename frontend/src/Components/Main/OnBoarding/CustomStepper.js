@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
-import Question from './Question';
+import CustomForm from './CustomForm';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -13,6 +13,7 @@ const styles = theme => ({
   actions: {
     display: 'flex',
     justifyContent: 'space-between',
+    marginTop: 10,
   },
   root: {
     backgroundColor: '#fff',
@@ -20,7 +21,7 @@ const styles = theme => ({
   button: {
     marginRight: theme.spacing.unit,
   },
-  dialog: {
+  dialogContent: {
     paddingLeft: 20,
     paddingRight: 20,
     paddingTop: 20,
@@ -33,17 +34,88 @@ const styles = theme => ({
 });
 
 const getSteps = () => {
-  return ['Questions Type 1', 'Questions Type 2', 'Questions Type 3'];
+  return ['Step 1', 'Step 2', 'Step 3'];
 }
 
 const getStepContent = (step) => {
   switch (step) {
     case 0:
-      return ['Phase 1 Questions 1', 'Phase 1 Question 2', 'Phase 1 Question 3', 'Phase 1 Question 4'];
     case 1:
-      return ['Phase 2 Questions 1', 'Phase 2 Question 2', 'Phase 2 Question 3', 'Phase 2 Question 4'];
     case 2:
-      return ['Phase 3 Questions 1', 'Phase 3 Question 2', 'Phase 3 Question 3', 'Phase 3 Question 4'];
+      return [
+        {
+          question: 'Text',
+          inputType: 'text',
+          placeholder: 'Fill in Text',
+          isRequired: false,
+        },
+        {
+          question: 'Search',
+          inputType: 'search',
+          placeholder: 'Search here',
+          isRequired: false,
+        },
+        {
+          question: 'Telephone',
+          inputType: 'tel',
+          placeholder: '(xxx) - xxx - xxxx',
+          isRequired: false,
+        },
+        {
+          question: 'Password',
+          inputType: 'password',
+          placeholder: '********',
+          isRequired: false,
+        },
+        {
+          question: 'URL',
+          inputType: 'url',
+          placeholder: 'http://www.xyz.com',
+          isRequired: false,
+        },
+        {
+          question: 'Email',
+          inputType: 'email',
+          placeholder: 'xyz@asu.edu',
+          isRequired: false,
+        },
+        {
+          question: 'Date',
+          inputType: 'date',
+          defaultValue: '2018-08-30',
+          isRequired: false,
+        },
+        {
+          question: 'Number',
+          inputType: 'number',
+          min: "0",
+          max: "100",
+          isRequired: false,
+        },
+        {
+          question: 'Checkboxes',
+          inputType: 'checkbox',
+          isRequired: false,
+          values: ['checkbox1', 'checkbox2'],
+        },
+        {
+          question: 'Radio',
+          inputType: 'radio',
+          isRequired: false,
+          values: ['radio1', 'radio2'],
+        },
+        {
+          question: 'Select',
+          inputType: 'select',
+          isRequired: false,
+          values: ['select1', 'select2'],
+        },
+        {
+          question: 'Question',
+          inputType: 'file',
+          isRequired: false,
+        },
+      ];
     default:
       return 'Unknown step';
   }
@@ -124,6 +196,8 @@ class CustomStepper extends Component {
           open={this.state.open}
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
+          fullWidth
+          maxWidth="md"
         >
           <Stepper activeStep={activeStep}>
             {steps.map((label, index) => {
@@ -136,7 +210,7 @@ class CustomStepper extends Component {
               );
             })}
           </Stepper>
-          <div className={classes.dialog}>
+          <div className={classes.dialogContent}>
             {activeStep === steps.length ? (
               <div>
                 <Typography className={classes.instructions}>
@@ -148,23 +222,23 @@ class CustomStepper extends Component {
               </div>
             ) : (
               <div>
-                <Question content={getStepContent(activeStep)} />
+                <CustomForm content={getStepContent(activeStep)} />
                 <div className={classes.actions}>
                   <Button
-                    disabled={activeStep === 0}
-                    onClick={this.handleBack}
+                    onClick={this.handleClose}
                     className={classes.button}
                   >
-                    Back
+                    Cancel
                   </Button>
                   <div>
                     <Button
+                      disabled={activeStep === 0}
                       variant="contained"
                       color="primary"
-                      onClick={this.handleClose}
+                      onClick={this.handleBack}
                       className={classes.button}
                     >
-                      Cancel
+                      Previous
                     </Button>
                     <Button
                       variant="contained"
