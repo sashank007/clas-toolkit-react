@@ -8,30 +8,7 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-
-const styles = theme => ({
-  actions: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginTop: 10,
-  },
-  root: {
-    backgroundColor: '#fff',
-  },
-  button: {
-    marginRight: theme.spacing.unit,
-  },
-  dialogContent: {
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingTop: 20,
-    paddingBottom: 20,
-  },
-  instructions: {
-    marginTop: theme.spacing.unit,
-    marginBottom: theme.spacing.unit,
-  },
-});
+import { styles } from './Styles/CustomStepper';
 
 const getSteps = () => {
   return ['Step 1', 'Step 2', 'Step 3'];
@@ -193,6 +170,8 @@ class CustomStepper extends Component {
       <div className={classes.root}>
         <Button variant="contained" color="primary"  onClick={this.handleClickOpen}>Start</Button>
         <Dialog
+          disableBackdropClick
+          disableEscapeKeyDown
           open={this.state.open}
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
@@ -227,6 +206,8 @@ class CustomStepper extends Component {
                   <Button
                     onClick={this.handleClose}
                     className={classes.button}
+                    variant="contained"
+                    color="secondary"
                   >
                     Cancel
                   </Button>

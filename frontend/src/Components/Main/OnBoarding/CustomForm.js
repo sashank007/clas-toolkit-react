@@ -14,13 +14,7 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-
-const styles = {
-  title: {
-    marginBottom: 16,
-    fontSize: 14,
-  },
-};
+import { styles } from './Styles/CustomForm'
 
 function CustomForm(props) {
   const { classes, content } = props;
