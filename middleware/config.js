@@ -14,7 +14,7 @@ const config = {
   cas_version     : '2.0',
   renew           : false,
   is_dev_mode     : dev_mode,
-  dev_mode_user   : 'atikku1',
+  dev_mode_user   : 'rbruce2',
   dev_mode_info   : {},
   session_name    : 'cas_user',
   session_info    : 'cas_userinfo',
