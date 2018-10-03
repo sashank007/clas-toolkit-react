@@ -6,28 +6,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CustomStepper from './CustomStepper';
 import Typography from '@material-ui/core/Typography';
-
-const styles = {
-  actions: {
-    display: 'flex',
-    flexDirection: 'row-reverse'
-  },
-  card: {
-    minWidth: 275,
-    marginBottom: 10,
-  },
-  content: {
-    display: 'flex',
-  },
-  onboarding: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  title: {
-    marginBottom: 16,
-    fontSize: 30,
-  },
-};
+import { styles } from './Styles/OnBoarding';
 
 class OnBoarding extends Component {
   render() {

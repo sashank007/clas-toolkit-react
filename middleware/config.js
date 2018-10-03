@@ -10,7 +10,7 @@ else {
 
 const config = {
   cas_url     : 'https://weblogin.asu.edu/cas',
-  service_url : 'https://tools.clas.asu.edu',
+  service_url : 'https://tools-stg.clas.asu.edu',
   cas_version     : '2.0',
   renew           : false,
   is_dev_mode     : dev_mode,

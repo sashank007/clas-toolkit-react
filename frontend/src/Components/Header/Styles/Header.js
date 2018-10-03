@@ -1,9 +1,9 @@
-const drawerWidth = 240;
+const drawerWidth = 300;
 
 export const styles = (theme) => ({
   root: {
     flexGrow: 1,
-    height: `calc(100%)`,
+    height: '100vh',
     zIndex: 1,
     overflow: 'hidden',
     position: 'relative',

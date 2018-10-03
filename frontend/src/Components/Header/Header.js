@@ -94,7 +94,7 @@ class Header extends React.Component {
           open={this.state.open}
         >
           <div className={classes.toolbar}>
-            <a href="/"><img alt="ASU" src="https://brandguide.asu.edu/sites/default/files/endorsed/color/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png" className={classes.logo}/></a>
+            <a href="/dashboard"><img alt="ASU" src="https://brandguide.asu.edu/sites/default/files/endorsed/color/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png" className={classes.logo}/></a>
             <IconButton onClick={this.handleDrawerClose}>
               {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
             </IconButton>
