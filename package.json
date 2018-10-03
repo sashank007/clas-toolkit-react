@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently --kill-others \"node index.js\" \"cd frontend && yarn start\"",
+    "start": "node index.js",
+    "dev": "concurrently --kill-others \"node index.js\" \"cd frontend && yarn start\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "heroku-postbuild": "cd frontend && yarn && yarn run build"
   },
