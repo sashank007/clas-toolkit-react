@@ -14,7 +14,8 @@ const styles = theme => ({
     display: "flex",
     flexWrap: "wrap",
     minWidth: 300,
-    width: "100%"
+    width: "100%",
+    display: "inline-block"
   },
   image: {
     position: "relative",

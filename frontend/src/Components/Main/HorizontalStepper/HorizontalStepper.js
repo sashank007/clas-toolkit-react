@@ -10,9 +10,7 @@ import AreaForm from "../AreaForm/AreaForm";
 // import SubAreaForm from "../SubAreaForm/SubAreaForm";
 // import UserDetailsForm from "../Home/UserDetailsForm/UserDetailsForm";
 const styles = theme => ({
-  root: {
-    width: "90%"
-  },
+  root: {},
   button: {
     marginRight: theme.spacing.unit
   },
