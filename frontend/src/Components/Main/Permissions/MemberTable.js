@@ -1,42 +1,43 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import Avatar from '@material-ui/core/Avatar';
-import EditRole from './EditRole';
-import Paper from '@material-ui/core/Paper';
-import PersonIcon from '@material-ui/icons/Person';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import { withStyles } from '@material-ui/core/styles';
-import { styles } from './Styles/MemberTable';
-
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
+import Avatar from "@material-ui/core/Avatar";
+import EditRole from "./EditRole";
+import Paper from "@material-ui/core/Paper";
+import PersonIcon from "@material-ui/icons/Person";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import { withStyles } from "@material-ui/core/styles";
+import { styles } from "./Styles/MemberTable";
+import DefaultIcon from "../../../Assets/Images/defaultIcon.jpg";
 const CustomTableCell = withStyles(theme => ({
   head: {
-    backgroundColor: '#5C6670',
+    backgroundColor: "#5C6670",
     color: theme.palette.common.white,
-    fontSize: 16,
+    fontSize: 16
   },
   body: {
-    fontSize: 14,
-  },
+    fontSize: 14
+  }
 }))(TableCell);
 
 class MemberTable extends Component {
   state = {
     role: this.props.role,
-    imageError: false,
-  }
+    imageError: false
+  };
 
   componentWillReceiveProps(nextProps) {
     this.setState({ role: nextProps.role, imageError: false });
   }
 
-  onSrcError = (event) => {
-    this.setState({imageError: true});
-  }
+  onSrcError = event => {
+    this.setState({ imageError: true });
+    event.target.src = DefaultIcon;
+  };
 
   render() {
     const { classes, roles, updateRoles } = this.props;
@@ -47,30 +48,52 @@ class MemberTable extends Component {
           <TableHead>
             <TableRow>
               <CustomTableCell className={classes.head}>Name</CustomTableCell>
-              <CustomTableCell className={classes.head}>Department</CustomTableCell>
+              <CustomTableCell className={classes.head}>
+                Department
+              </CustomTableCell>
               <CustomTableCell className={classes.head}>Email</CustomTableCell>
-              <CustomTableCell className={classes.head}>ASURITE</CustomTableCell>
-              <CustomTableCell className={classes.head}>Date Added</CustomTableCell>
+              <CustomTableCell className={classes.head}>
+                ASURITE
+              </CustomTableCell>
+              <CustomTableCell className={classes.head}>
+                Date Added
+              </CustomTableCell>
               <CustomTableCell className={classes.head}>Action</CustomTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.state.role ?
+            {this.state.role ? (
               this.state.role.members.map(row => {
                 return (
                   <TableRow className={classes.row} key={row.id}>
                     <CustomTableCell className={classes.cell}>
                       <div className={classes.name}>
-                        <Avatar alt="User" src={row.photoUrl} className={classNames(classes.avatar, classes.bigAvatar)} onError={this.onSrcError}>
+                        <Avatar
+                          alt="User"
+                          src={row.photoUrl}
+                          className={classNames(
+                            classes.avatar,
+                            classes.bigAvatar
+                          )}
+                          onError={this.onSrcError}
+                        >
                           {this.state.imageError && <PersonIcon />}
                         </Avatar>
                         <div>{row.name}</div>
                       </div>
                     </CustomTableCell>
-                    <CustomTableCell className={classes.cell}>{row.department}</CustomTableCell>
-                    <CustomTableCell className={classes.cell}>{row.email}</CustomTableCell>
-                    <CustomTableCell className={classes.cell}>{row.asurite}</CustomTableCell>
-                    <CustomTableCell className={classes.cell}>{row.dateadded}</CustomTableCell>
+                    <CustomTableCell className={classes.cell}>
+                      {row.department}
+                    </CustomTableCell>
+                    <CustomTableCell className={classes.cell}>
+                      {row.email}
+                    </CustomTableCell>
+                    <CustomTableCell className={classes.cell}>
+                      {row.asurite}
+                    </CustomTableCell>
+                    <CustomTableCell className={classes.cell}>
+                      {row.dateadded}
+                    </CustomTableCell>
                     <CustomTableCell className={classes.cell}>
                       <EditRole
                         roles={roles}
@@ -87,7 +110,9 @@ class MemberTable extends Component {
                   </TableRow>
                 );
               })
-            : <TableRow />}
+            ) : (
+              <TableRow />
+            )}
           </TableBody>
         </Table>
       </Paper>
@@ -96,7 +121,7 @@ class MemberTable extends Component {
 }
 
 MemberTable.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(MemberTable);
