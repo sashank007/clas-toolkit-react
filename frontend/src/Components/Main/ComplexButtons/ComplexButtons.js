@@ -114,12 +114,20 @@ const images = [
 
 function ButtonBases(props) {
   const { classes } = props;
+  const state = {
+    clicked: "clicked"
+  };
 
+  //   function handleChildClick() {
+  //     console.log("clicked inside child");
+  //     this.props.handleParentClick("clicked p");
+  //   }
   return (
     <div className={classes.root}>
       {images.map(image => (
         <ButtonBase
           focusRipple
+          // onClick={this.handleChildClick}
           key={image.title}
           className={classes.image}
           focusVisibleClassName={classes.focusVisible}

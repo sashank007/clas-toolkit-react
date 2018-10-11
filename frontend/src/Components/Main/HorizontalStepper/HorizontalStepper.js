@@ -10,6 +10,7 @@ import AreaForm from "../AreaForm/AreaForm";
 import SubAreaForm from "../SubAreaForm/SubAreaForm";
 // import SubAreaForm from "../SubAreaForm/SubAreaForm";
 // import UserDetailsForm from "../Home/UserDetailsForm/UserDetailsForm";
+import DetailsForm from "../DetailsForm/DetailsForm";
 const styles = theme => ({
   root: {},
   button: {
@@ -25,7 +26,7 @@ const componentStyle = {
   padding: 50
 };
 function getSteps() {
-  return ["Select Area", "Create Sub Area", "Submit Details"];
+  return ["Select Area", "Select Sub Area", "Confirm Details"];
 }
 
 function getStepContent(step) {
@@ -43,7 +44,11 @@ function getStepContent(step) {
         </div>
       );
     case 2:
-      return <div style={componentStyle}>{/* <UserDetailsForm /> */}</div>;
+      return (
+        <div style={componentStyle}>
+          <DetailsForm />
+        </div>
+      );
     default:
       return "Unknown step";
   }

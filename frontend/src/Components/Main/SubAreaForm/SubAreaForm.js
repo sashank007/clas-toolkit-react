@@ -22,7 +22,7 @@ class SubAreaForm extends React.Component {
 
     return (
       <div>
-        <h3>Which sub-area do you want support in?</h3>
+        <h3>Which sub-area do you want help in?</h3>
         <FormControl component="fieldset">
           <RadioGroup
             aria-label="SubArea: IT"

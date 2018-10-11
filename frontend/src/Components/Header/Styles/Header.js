@@ -6,7 +6,8 @@ export const styles = theme => ({
     zIndex: 1,
     overflow: "hidden",
     position: "relative",
-    display: "flex"
+    display: "flex",
+    height: "100vh"
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
