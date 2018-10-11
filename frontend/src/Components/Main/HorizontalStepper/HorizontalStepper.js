@@ -7,6 +7,7 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import AreaForm from "../AreaForm/AreaForm";
+import SubAreaForm from "../SubAreaForm/SubAreaForm";
 // import SubAreaForm from "../SubAreaForm/SubAreaForm";
 // import UserDetailsForm from "../Home/UserDetailsForm/UserDetailsForm";
 const styles = theme => ({
@@ -36,7 +37,11 @@ function getStepContent(step) {
         </div>
       );
     case 1:
-      return <div style={componentStyle}>{/* <SubAreaForm /> */}</div>;
+      return (
+        <div style={componentStyle}>
+          <SubAreaForm />
+        </div>
+      );
     case 2:
       return <div style={componentStyle}>{/* <UserDetailsForm /> */}</div>;
     default:
