@@ -12,6 +12,7 @@
   "author": "ASU",
   "license": "ISC",
   "dependencies": {
+    "@material-ui/core": "^3.2.0",
     "body-parser": "^1.18.3",
     "cas-authentication": "0.0.8",
     "concurrently": "^4.0.1",
