@@ -29,36 +29,71 @@ function getSteps() {
   return ["Select Area", "Select Sub Area", "Confirm Details"];
 }
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return (
-        <div style={componentStyle}>
-          <AreaForm />
-        </div>
-      );
-    case 1:
-      return (
-        <div style={componentStyle}>
-          <SubAreaForm />
-        </div>
-      );
-    case 2:
-      return (
-        <div style={componentStyle}>
-          <DetailsForm />
-        </div>
-      );
-    default:
-      return "Unknown step";
-  }
-}
+// function getStepContent(step) {
+
+//   switch (step) {
+//     case 0:
+//       return (
+//         <div style={componentStyle}>
+//           <AreaForm setArea={this.handleSetArea} />
+//         </div>
+//       );
+//     case 1:
+//       return (
+//         <div style={componentStyle}>
+//           <SubAreaForm />
+//         </div>
+//       );
+//     case 2:
+//       return (
+//         <div style={componentStyle}>
+//           <DetailsForm />
+//         </div>
+//       );
+//     default:
+//       return "Unknown step";
+//   }
+// }
 
 class HorizontalLinearStepper extends React.Component {
   state = {
     activeStep: 0,
-    skipped: new Set()
+    skipped: new Set(),
+    area: "",
+    subareas: ["Software", "Hardware", "Other"],
+    userDetails: {
+      name: "",
+      email: "",
+      department: "",
+      phoneNumber: "",
+      Message: ""
+    }
   };
+
+  getStepContent(step) {
+    switch (step) {
+      case 0:
+        return (
+          <div style={componentStyle}>
+            <AreaForm setArea={this.handleSetArea} />
+          </div>
+        );
+      case 1:
+        return (
+          <div style={componentStyle}>
+            <SubAreaForm />
+          </div>
+        );
+      case 2:
+        return (
+          <div style={componentStyle}>
+            <DetailsForm />
+          </div>
+        );
+      default:
+        return "Unknown step";
+    }
+  }
 
   isStepOptional = step => {
     return step === 1;
@@ -71,16 +106,61 @@ class HorizontalLinearStepper extends React.Component {
       skipped = new Set(skipped.values());
       skipped.delete(activeStep);
     }
+
     this.setState({
       activeStep: activeStep + 1,
       skipped
     });
   };
 
+  handleSubmit = () => {
+    const { activeStep } = this.state;
+    let { skipped } = this.state;
+    if (this.isStepSkipped(activeStep)) {
+      skipped = new Set(skipped.values());
+      skipped.delete(activeStep);
+    }
+    console.log("Successfully submitted");
+    this.setState({
+      activeStep: activeStep + 1,
+      skipped
+    });
+  };
   handleBack = () => {
     this.setState(state => ({
       activeStep: state.activeStep - 1
     }));
+  };
+
+  handleSetArea = areaIndex => {
+    const { area } = this.state;
+    const areas = [
+      "IT",
+      "Web",
+      "Marketing/Design",
+      "Events",
+      "Salesforce/Qualtrics"
+    ];
+    console.log("inside horizontal stepper " + areaIndex);
+    console.log(areas[areaIndex]);
+    const newArea = areas[areaIndex];
+    console.log("new area -->", newArea);
+
+    this.setState(
+      prevState => {
+        return {
+          area: newArea
+        };
+      },
+      function() {
+        console.log(this.state);
+      }
+    );
+
+    // this.setState({ area: "" });
+    // this.setState({ area: newArea });
+    // // this.setState({ activeStep: 100 });
+    // console.log(this.state);
   };
 
   handleSkip = () => {
@@ -150,7 +230,7 @@ class HorizontalLinearStepper extends React.Component {
           ) : (
             <div>
               <Typography className={classes.instructions}>
-                {getStepContent(activeStep)}
+                {this.getStepContent(activeStep)}
               </Typography>
               <div>
                 <Button
@@ -173,7 +253,11 @@ class HorizontalLinearStepper extends React.Component {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={this.handleNext}
+                  onClick={
+                    activeStep === steps.length - 1
+                      ? this.handleSubmit
+                      : this.handleNext
+                  }
                   className={classes.button}
                 >
                   {activeStep === steps.length - 1 ? "Finish" : "Next"}
