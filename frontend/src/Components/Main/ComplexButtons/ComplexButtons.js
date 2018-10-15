@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import ButtonBase from "@material-ui/core/ButtonBase";
@@ -8,7 +8,7 @@ import WebImage from "../../../Assets/Images/web.jpg";
 import MarketingImage from "../../../Assets/Images/marketingwallpaper.jpg";
 import EventsImage from "../../../Assets/Images/events.jpg";
 import SalesImage from "../../../Assets/Images/sales.jpg";
-
+import classNames from "classnames";
 const styles = theme => ({
   root: {
     display: "flex",
@@ -24,6 +24,9 @@ const styles = theme => ({
       width: "100% !important", // Overrides inline-style
       height: 100
     },
+    "&:click": {
+      height: 200
+    },
     "&:hover, &$focusVisible": {
       zIndex: 1,
       "& $imageBackdrop": {
@@ -33,7 +36,7 @@ const styles = theme => ({
         opacity: 0
       },
       "& $imageTitle": {
-        border: "4px solid currentColor"
+        border: "4px solid currentcolor"
       }
     }
   },
@@ -84,72 +87,142 @@ const styles = theme => ({
   }
 });
 
-const images = [
+const areas = [
   {
+    id: 0,
     img: ComputerImage,
     title: "IT",
     width: "30%"
   },
   {
+    id: 1,
     img: WebImage,
     title: "Web",
     width: "30%"
   },
   {
+    id: 2,
     img: MarketingImage,
     title: "Marketing/Design",
     width: "30%"
   },
   {
+    id: 3,
     img: EventsImage,
     title: "Events",
     width: "30%"
   },
   {
+    id: 4,
     img: SalesImage,
     title: "SalesForce/Qualtrics",
     width: "30%"
   }
 ];
 
-function ButtonBases(props) {
-  const { classes } = props;
-
-  return (
-    <div className={classes.root}>
-      {images.map(image => (
-        <ButtonBase
-          focusRipple
-          key={image.title}
-          className={classes.image}
-          focusVisibleClassName={classes.focusVisible}
-          style={{
-            width: image.width
-          }}
-        >
-          <span
-            className={classes.imageSrc}
+class ButtonBases extends React.Component {
+  constructor() {
+    super();
+    // this.handleClick = this.handleClick.bind(this);
+  }
+  handleClick = key => {
+    console.log("clicked in complex buttons");
+    // console.log(key);
+    this.props.handleParentClick(key);
+  };
+  render() {
+    const { classes } = this.props;
+    return (
+      <div className={classes.root}>
+        {areas.map(image => (
+          <ButtonBase
+            focusRipple
+            // onClick={this.handleChildClick}
+            key={image.title}
+            className={classes.image}
+            style={{ backgroundColor: "white" }}
+            onClick={this.handleClick.bind(this, image.id)}
+            focusVisibleClassName={classes.focusVisible}
             style={{
-              backgroundImage: `url(${image.img})`
+              width: image.width
             }}
-          />
-          <span className={classes.imageBackdrop} />
-          <span className={classes.imageButton}>
-            <Typography
-              component="span"
-              variant="subtitle1"
-              color="inherit"
-              className={classes.imageTitle}
-            >
-              {image.title}
-              <span className={classes.imageMarked} />
-            </Typography>
-          </span>
-        </ButtonBase>
-      ))}
-    </div>
-  );
+          >
+            <span
+              className={classes.imageSrc}
+              style={{
+                backgroundImage: `url(${image.img})`
+              }}
+            />
+            <span className={classes.imageBackdrop} />
+            <span className={classes.imageButton}>
+              <Typography
+                component="span"
+                variant="subtitle1"
+                color="inherit"
+                className={classes.imageTitle}
+              >
+                {image.title}
+                <span className={classes.imageMarked} />
+              </Typography>
+            </span>
+          </ButtonBase>
+        ))}
+      </div>
+    );
+  }
 }
+
+// function ButtonBases(props) {
+//   const { classes } = props;
+
+//   function handleClick() {
+//     console.log("clicked");
+//   }
+//   const state = {
+//     clicked: "clicked"
+//   };
+
+//   //   function handleChildClick() {
+//   //     console.log("clicked inside child");
+//   //     this.props.handleParentClick("clicked p");
+//   //   }
+//   return (
+//     <div className={classes.root}>
+//       {images.map(image => (
+//         <ButtonBase
+//           focusRipple
+//           // onClick={this.handleChildClick}
+//           key={image.title}
+//           className={classes.image}
+//           onClick={this.handleClick}
+//           focusVisibleClassName={classes.focusVisible}
+//           style={{
+//             width: image.width
+//           }}
+//         >
+//           <span
+//             className={classes.imageSrc}
+//             style={{
+//               backgroundImage: `url(${image.img})`
+//             }}
+//           />
+//           <span className={classes.imageBackdrop} />
+//           <span className={classes.imageButton}>
+//             <Typography
+//               component="span"
+//               variant="subtitle1"
+//               color="inherit"
+//               className={classes.imageTitle}
+//             >
+//               {image.title}
+//               <span className={classes.imageMarked} />
+//             </Typography>
+//           </span>
+//         </ButtonBase>
+//       ))}
+//     </div>
+//   );
+// }
 
 ButtonBases.propTypes = {
   classes: PropTypes.object.isRequired
