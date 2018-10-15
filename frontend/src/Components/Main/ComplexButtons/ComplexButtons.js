@@ -9,17 +9,36 @@ import MarketingImage from "../../../Assets/Images/marketingwallpaper.jpg";
 import EventsImage from "../../../Assets/Images/events.jpg";
 import SalesImage from "../../../Assets/Images/sales.jpg";
 import classNames from "classnames";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
 const styles = theme => ({
   root: {
-    display: "flex",
+    marginLeft: "45%",
     flexWrap: "wrap",
     minWidth: 300,
     width: "100%",
-    display: "inline-block"
+    alignItems: "center",
+    justifyContent: "center"
+    // display: "inline-block"
   },
-  image: {
+
+  root: {
+    flexGrow: 1
+  },
+  paper: {
+    height: 140,
+    width: 150
+  },
+  control: {
+    padding: 5 * 2
+  },
+  card: {
     position: "relative",
-    height: 200,
+    height: 150,
     [theme.breakpoints.down("xs")]: {
       width: "100% !important", // Overrides inline-style
       height: 100
@@ -121,6 +140,9 @@ const areas = [
 ];
 
 class ButtonBases extends React.Component {
+  state = {
+    spacing: "40"
+  };
   constructor() {
     super();
     // this.handleClick = this.handleClick.bind(this);
@@ -133,44 +155,93 @@ class ButtonBases extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <div className={classes.root}>
-        {areas.map(image => (
-          <ButtonBase
-            focusRipple
-            // onClick={this.handleChildClick}
-            key={image.title}
-            className={classes.image}
-            style={{ backgroundColor: "white" }}
-            onClick={this.handleClick.bind(this, image.id)}
-            focusVisibleClassName={classes.focusVisible}
-            style={{
-              width: image.width
-            }}
+      <Grid container className={classes.root} spacing={16}>
+        <Grid item xs={12}>
+          <Grid
+            container
+            className={classes.demo}
+            justify="center"
+            spacing={40}
           >
-            <span
-              className={classes.imageSrc}
-              style={{
-                backgroundImage: `url(${image.img})`
-              }}
-            />
-            <span className={classes.imageBackdrop} />
-            <span className={classes.imageButton}>
-              <Typography
-                component="span"
-                variant="subtitle1"
-                color="inherit"
-                className={classes.imageTitle}
-              >
-                {image.title}
-                <span className={classes.imageMarked} />
-              </Typography>
-            </span>
-          </ButtonBase>
-        ))}
-      </div>
+            {areas.map(area => (
+              <Grid key={area.id} item>
+                <Paper className={classes.paper}>
+                  <Card style={{ width: "100%" }}>
+                    <CardContent>Hi</CardContent>
+                  </Card>
+                  {/* <p className={classes.title}>{area.title}</p> */}
+                </Paper>
+              </Grid>
+            ))}
+          </Grid>
+        </Grid>
+      </Grid>
     );
   }
 }
+
+// <div className={classes.root}>
+//   {areas.map(image => (
+//     <Card style={{ width: "10%" }} className={classes.card}>
+//       <CardContent>
+//         <Typography
+//           className={classes.title}
+//           color="textSecondary"
+//           gutterBottom
+//         >
+//           Word of the Day
+//         </Typography>
+//         <Typography variant="h5" component="h2">
+//           benovelant
+//         </Typography>
+//         <Typography className={classes.pos} color="textSecondary">
+//           adjective
+//         </Typography>
+//         <Typography component="p">
+//           well meaning and kindly.
+//           <br />
+//           {'"a benevolent smile"'}
+//         </Typography>
+//       </CardContent>
+//       <CardActions>
+//         <Button size="small">Learn More</Button>
+//       </CardActions>
+//     </Card>
+// <ButtonBase
+//   focusRipple
+//   // onClick={this.handleChildClick}
+//   key={image.title}
+//   className={classes.image}
+//   style={{ backgroundColor: "white" }}
+//   onClick={this.handleClick.bind(this, image.id)}
+//   focusVisibleClassName={classes.focusVisible}
+//   style={{
+//     width: image.width
+//   }}
+// >
+//   <span
+//     className={classes.imageSrc}
+//     style={{
+//       backgroundImage: `url(${image.img})`
+//     }}
+//   />
+//   <span className={classes.imageBackdrop} />
+//   <span className={classes.imageButton}>
+//     <Typography
+//       component="span"
+//       variant="subtitle1"
+//       color="inherit"
+//       className={classes.imageTitle}
+//     >
+//       {image.title}
+//       <span className={classes.imageMarked} />
+//     </Typography>
+//   </span>
+// </ButtonBase>
+//       ))}
+//     </div>
+//   );
+// }
 
 // function ButtonBases(props) {
 //   const { classes } = props;
