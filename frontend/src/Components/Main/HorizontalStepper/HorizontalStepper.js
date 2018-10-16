@@ -12,7 +12,17 @@ import SubAreaForm from "../SubAreaForm/SubAreaForm";
 // import UserDetailsForm from "../Home/UserDetailsForm/UserDetailsForm";
 import DetailsForm from "../DetailsForm/DetailsForm";
 const styles = theme => ({
-  root: {},
+  stepper: { backgroundColor: "white" },
+  shell: {
+    boxSizing: "border-box",
+    color: "white"
+  },
+  root: {
+    border: "1px solid #e3e5e8",
+    backgroundColor: "white",
+    boxShadow: "0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)",
+    padding: "50px"
+  },
   button: {
     marginRight: theme.spacing.unit
   },
@@ -156,11 +166,6 @@ class HorizontalLinearStepper extends React.Component {
         console.log(this.state);
       }
     );
-
-    // this.setState({ area: "" });
-    // this.setState({ area: newArea });
-    // // this.setState({ activeStep: 100 });
-    // console.log(this.state);
   };
 
   handleSkip = () => {
@@ -197,74 +202,76 @@ class HorizontalLinearStepper extends React.Component {
     const { activeStep } = this.state;
 
     return (
-      <div className={classes.root}>
-        <Stepper activeStep={activeStep}>
-          {steps.map((label, index) => {
-            const props = {};
-            const labelProps = {};
-            if (this.isStepOptional(index)) {
-              labelProps.optional = (
-                <Typography variant="caption">Optional</Typography>
+      <div className={classes.shell}>
+        <div className={classes.root}>
+          <Stepper className={classes.stepper} activeStep={activeStep}>
+            {steps.map((label, index) => {
+              const props = {};
+              const labelProps = {};
+              if (this.isStepOptional(index)) {
+                labelProps.optional = (
+                  <Typography variant="caption">Optional</Typography>
+                );
+              }
+              if (this.isStepSkipped(index)) {
+                props.completed = false;
+              }
+              return (
+                <Step key={label} {...props}>
+                  <StepLabel {...labelProps}>{label}</StepLabel>
+                </Step>
               );
-            }
-            if (this.isStepSkipped(index)) {
-              props.completed = false;
-            }
-            return (
-              <Step key={label} {...props}>
-                <StepLabel {...labelProps}>{label}</StepLabel>
-              </Step>
-            );
-          })}
-        </Stepper>
-        <div>
-          {activeStep === steps.length ? (
-            <div>
-              <Typography className={classes.instructions}>
-                All steps completed - you&quot;re finished
-              </Typography>
-              <Button onClick={this.handleReset} className={classes.button}>
-                Reset
-              </Button>
-            </div>
-          ) : (
-            <div>
-              <Typography className={classes.instructions}>
-                {this.getStepContent(activeStep)}
-              </Typography>
+            })}
+          </Stepper>
+          <div>
+            {activeStep === steps.length ? (
               <div>
-                <Button
-                  disabled={activeStep === 0}
-                  onClick={this.handleBack}
-                  className={classes.button}
-                >
-                  Back
+                <Typography className={classes.instructions}>
+                  All steps completed - you&quot;re finished
+                </Typography>
+                <Button onClick={this.handleReset} className={classes.button}>
+                  Reset
                 </Button>
-                {this.isStepOptional(activeStep) && (
+              </div>
+            ) : (
+              <div>
+                <Typography className={classes.instructions}>
+                  {this.getStepContent(activeStep)}
+                </Typography>
+                <div>
+                  <Button
+                    disabled={activeStep === 0}
+                    onClick={this.handleBack}
+                    className={classes.button}
+                  >
+                    Back
+                  </Button>
+                  {this.isStepOptional(activeStep) && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={this.handleSkip}
+                      className={classes.button}
+                    >
+                      Skip
+                    </Button>
+                  )}
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={this.handleSkip}
+                    onClick={
+                      activeStep === steps.length - 1
+                        ? this.handleSubmit
+                        : this.handleNext
+                    }
                     className={classes.button}
                   >
-                    Skip
+                    {activeStep === steps.length - 1 ? "Finish" : "Next"}
                   </Button>
-                )}
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={
-                    activeStep === steps.length - 1
-                      ? this.handleSubmit
-                      : this.handleNext
-                  }
-                  className={classes.button}
-                >
-                  {activeStep === steps.length - 1 ? "Finish" : "Next"}
-                </Button>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     );
