@@ -70,7 +70,8 @@ class HorizontalLinearStepper extends React.Component {
     activeStep: 0,
     skipped: new Set(),
     area: "",
-    subareas: ["Software", "Hardware", "Other"],
+    subArea: "",
+    location: "",
     userDetails: {
       name: "",
       email: "",
@@ -91,7 +92,10 @@ class HorizontalLinearStepper extends React.Component {
       case 1:
         return (
           <div style={componentStyle}>
-            <SubAreaForm />
+            <SubAreaForm
+              subAreaValue={this.handleSetSubArea}
+              subAreaLocation={this.handleSetSubAreaLocation}
+            />
           </div>
         );
       case 2:
@@ -164,6 +168,42 @@ class HorizontalLinearStepper extends React.Component {
       },
       function() {
         console.log(this.state);
+      }
+    );
+  };
+  handleSetSubAreaLocation = subAreaLocation => {
+    const { location } = this.state;
+
+    const newSubAreaLocation = subAreaLocation;
+    this.setState(
+      prevState => {
+        return {
+          location: newSubAreaLocation
+        };
+      },
+      function() {
+        console.log(
+          "inside horizontal stepper sub area location --> ",
+          this.state
+        );
+      }
+    );
+  };
+  handleSetSubArea = subAreaValue => {
+    const { subArea } = this.state;
+
+    const newSubArea = subAreaValue;
+    this.setState(
+      prevState => {
+        return {
+          subArea: newSubArea
+        };
+      },
+      function() {
+        console.log(
+          "inside horizontal stepper sub area value --> ",
+          this.state
+        );
       }
     );
   };

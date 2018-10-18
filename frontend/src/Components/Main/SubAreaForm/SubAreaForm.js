@@ -9,12 +9,35 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 class SubAreaForm extends React.Component {
+  // constructor() {
+  //   super();
+  // }
   state = {
-    value: "female"
+    value: "None",
+    location: ""
   };
 
   handleChange = event => {
-    this.setState({ value: event.target.value });
+    this.setState({ value: event.target.value }, function() {
+      console.log("state of radio box in subArea", this.state);
+    });
+    this.props.subAreaValue(event.target.value);
+  };
+  handleLocationChange = event => {
+    const { location } = this.state;
+    this.setState(
+      {
+        location: event.target.value
+      },
+      function() {
+        console.log(
+          "current state after location change in subarea",
+          this.state
+        );
+      }
+    );
+    console.log("current location in subArea", event.target.value);
+    this.props.subAreaLocation(event.target.value);
   };
 
   render() {
@@ -22,7 +45,19 @@ class SubAreaForm extends React.Component {
 
     return (
       <div>
-        <h3>Which sub-area do you want help in?</h3>
+        <h3
+          style={{
+            lineHeight: "3.6rem",
+            fontSize: "2rem",
+            color: "#393a3d",
+            textAlign: "center"
+          }}
+        >
+          Which sub-area do you want help in?
+        </h3>
+        <p style={{ color: "#8d9096", fontWeight: "400px" }}>
+          Check a button that applies to you.
+        </p>
         <FormControl component="fieldset">
           <RadioGroup
             aria-label="SubArea: IT"
@@ -47,6 +82,7 @@ class SubAreaForm extends React.Component {
         <form>
           <TextField
             required
+            onBlur={this.handleLocationChange}
             id="outlined-required"
             label="Location"
             //className={classes.textField}

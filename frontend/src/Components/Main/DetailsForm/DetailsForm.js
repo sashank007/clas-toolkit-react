@@ -27,50 +27,87 @@ const styles = theme => ({
   }
 });
 
-const currencies = [
-  {
-    value: "USD",
-    label: "$"
-  },
-  {
-    value: "EUR",
-    label: "€"
-  },
-  {
-    value: "BTC",
-    label: "฿"
-  },
-  {
-    value: "JPY",
-    label: "¥"
-  }
-];
-
 class DetailsForm extends React.Component {
-  state = {
-    name: "Cat in the Hat",
-    age: "",
-    multiline: "Controlled",
-    currency: "EUR"
-  };
+  fetchData() {
+    this.setState({ ...this.state, isFetching: true });
+    fetch("/api/backend/currentuser")
+      .then(response => response.json())
+      .then(result =>
+        this.setState(
+          {
+            name: result.docs[0].firstName + " " + result.docs[0].lastName,
+            emailAddress: result.docs[0].emailAddress,
+            department: result.docs[0].primaryDepartment,
+            isFetching: false
+          },
+          function() {
+            console.log("currentUser in fetch", this.state);
+          }
+        )
+      );
+  }
 
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value
-    });
+  constructor() {
+    super();
+    console.log("constructor called");
+    this.state = {
+      currentUser: {},
+      isFetching: false,
+      tools: [],
+      roles: [],
+      name: "",
+      department: "",
+      emailAddress: ""
+    };
+    // this.fetchData();
+    console.log("component mounted", this.state);
+  }
+  handleChange = currentUser => event => {
+    this.setState(
+      {
+        [currentUser]: event.target.value
+      },
+      function() {
+        console.log("current userDetails:", this.state.currentUser);
+      }
+    );
   };
-
+  handleChangeNew = event => {
+    console.log("handleChangeNew", event.target.value);
+    this.setState({ emailAddress: event.target.value });
+  };
+  componentWillMount() {
+    // this.fetchData();
+    console.log("component did mount --> ", this.state.currentUser);
+    // this.state.currentUser.docs
+    //   ? this.setState({ name: this.state.currentUser.docs[0].firstName })
+    //   : null;
+  }
+  componentDidMount() {
+    this.fetchData();
+    // this.setState({ name: "" });
+    console.log("component did mount -->", this.state.currentUser);
+  }
   render() {
     const { classes } = this.props;
-
+    const {
+      currentUser,
+      name,
+      emailAddress,
+      department,
+      isFetching
+    } = this.state;
+    const testValue = "test";
+    // const { emailAddress } =
+    //   currentUser.docs && currentUser.docs[0].emailAddress;
     return (
       <form className={classes.container} noValidate autoComplete="off">
         <TextField
-          required
-          id="outlined-required"
-          label="Required"
-          defaultValue="Sashank Tungaturthi"
+          id="outlined-name"
+          label="Name"
           className={classes.textField}
+          value={!isFetching && name}
+          onChange={this.handleChange("currentUser")}
           margin="normal"
           variant="outlined"
         />
@@ -78,8 +115,10 @@ class DetailsForm extends React.Component {
         <TextField
           id="outlined-email-input"
           label="Email"
+          value={!isFetching && emailAddress}
           className={classes.textField}
           type="email"
+          onChange={this.handleChangeNew}
           name="email"
           autoComplete="email"
           margin="normal"
@@ -90,6 +129,7 @@ class DetailsForm extends React.Component {
           id="outlined-dense"
           label="Department"
           className={classNames(classes.textField, classes.dense)}
+          value={!isFetching && department}
           margin="dense"
           variant="outlined"
         />

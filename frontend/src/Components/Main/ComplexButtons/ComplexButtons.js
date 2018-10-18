@@ -34,17 +34,22 @@ const styles = theme => ({
     // display: "inline-block"
   },
   text: {
-    fontFamily: "Arial",
-    padding: "20px"
+    fontFamily: "avenir,helvetica,sans-serif",
+    padding: "20px",
+    color: "#393a3d",
+    fontSize: "0.8rem",
+    textTransform: "capitalize"
   },
   buttonNotClicked: {},
   buttonClicked: {
-    border: "  1px solid #0b1319"
+    border: "1px solid #42A5F5"
   },
   paper: {
-    height: 220,
-    width: 220,
-    borderRadius: "25px"
+    minHeight: "120px",
+    width: "200px",
+    backgroundColor: "#fafafa",
+    boxShadow: "0 4px 3px rgba(0,0,0,.2)",
+    borderRadius: "5px"
   },
   root: {
     flexGrow: 1
@@ -61,6 +66,7 @@ const styles = theme => ({
   title: {
     fontFamily: "Titillium Web:300",
     color: "black",
+    paddingTop: "10px",
     padding: "20px",
     display: "flex"
   },
@@ -68,14 +74,15 @@ const styles = theme => ({
     padding: "20px"
   },
   icon: {
-    width: 100,
-    height: 100,
+    width: 60,
+    height: 60,
     justifyContent: "center",
-    padding: "20px"
+
+    paddingTop: "20px"
   },
   card: {
     position: "relative",
-    height: 150,
+
     [theme.breakpoints.down("xs")]: {
       width: "100% !important", // Overrides inline-style
       height: 100
@@ -236,7 +243,7 @@ class ButtonBases extends React.Component {
                 >
                   <Paper className={classes.paper}>
                     <SvgIcon className={classes.icon}>
-                      <path d={area.path} />
+                      <path fill="#607D8B" d={area.path} />
                     </SvgIcon>
                     {/* <CheckMark className={classes.checkMark} />
                     {area.checkMark ? (
@@ -246,9 +253,7 @@ class ButtonBases extends React.Component {
                         <path d={area.path} />
                       </SvgIcon>
                     )} */}
-                    <Typography className={classes.text}>
-                      {area.title}
-                    </Typography>
+                    <p className={classes.text}>{area.title}</p>
                   </Paper>
                 </Button>
               </Grid>
