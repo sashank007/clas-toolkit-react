@@ -44,6 +44,7 @@ class DetailsForm extends React.Component {
       .then(result =>
         this.setState(
           {
+            currentUser: result.docs[0],
             name: result.docs[0].firstName + " " + result.docs[0].lastName,
             emailAddress: result.docs[0].emailAddress,
             department: result.docs[0].primaryDepartment,
@@ -71,20 +72,23 @@ class DetailsForm extends React.Component {
     // this.fetchData();
     console.log("component mounted", this.state);
   }
-  handleChange = currentUser => event => {
+  handleChange = value => event => {
     this.setState(
       {
-        [currentUser]: event.target.value
+        [value]: event.target.value
       },
       function() {
         console.log("current userDetails:", this.state);
       }
     );
+    // let currentUser = { ...this.state.currentUser };
+    // currentUser.value = event.target.value;
+    // this.setState({ currentUser }, function() {
+    //   console.log("new state of current user --> ", this.state.currentUser);
+    // });
+    this.props.detailsValue(this.state);
   };
-  handleChangeNew = value => event => {
-    console.log("handleChangeNew", event.target.value);
-    this.setState({ value: event.target.value });
-  };
+  handle;
   componentWillMount() {
     // this.fetchData();
     console.log("component did mount --> ", this.state.currentUser);
@@ -111,6 +115,20 @@ class DetailsForm extends React.Component {
     //   currentUser.docs && currentUser.docs[0].emailAddress;
     return (
       <form className={classes.container} noValidate autoComplete="off">
+        <h3
+          style={{
+            lineHeight: "3.6rem",
+            fontSize: "2rem",
+            color: "#393a3d",
+            textAlign: "center"
+          }}
+        >
+          Tell us who you are.
+        </h3>
+        <p style={{ color: "#8d9096", fontWeight: "400px" }}>
+          Please fill in the form with essential details.
+        </p>
+        <br />
         <TextField
           id="outlined-name"
           label="Name"

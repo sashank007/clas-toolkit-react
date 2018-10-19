@@ -74,10 +74,10 @@ class HorizontalLinearStepper extends React.Component {
     location: "",
     userDetails: {
       name: "",
-      email: "",
+      emailAddress: "",
       department: "",
-      phoneNumber: "",
-      Message: ""
+      phone: "",
+      message: ""
     }
   };
 
@@ -101,7 +101,7 @@ class HorizontalLinearStepper extends React.Component {
       case 2:
         return (
           <div style={componentStyle}>
-            <DetailsForm />
+            <DetailsForm detailsValue={this.handleSetDetailValue} />
           </div>
         );
       default:
@@ -146,6 +146,18 @@ class HorizontalLinearStepper extends React.Component {
     }));
   };
 
+  handleSetDetailValue = state => {
+    console.log("Handle Set Detail Value in horizontal stepper -->", state);
+    let userDetails = { ...this.state.userDetails };
+    userDetails.name = state.name;
+    userDetails.department = state.department;
+    userDetails.emailAddress = state.emailAddress;
+    userDetails.phone = state.phone;
+    userDetails.message = state.message;
+    this.setState({ userDetails }, function() {
+      console.log("set the state in horizontal stepper", this.state);
+    });
+  };
   handleSetArea = areaIndex => {
     const { area } = this.state;
     const areas = [
@@ -266,8 +278,14 @@ class HorizontalLinearStepper extends React.Component {
           <div>
             {activeStep === steps.length ? (
               <div>
-                <Typography className={classes.instructions}>
-                  All steps completed - you&quot;re finished
+                <Typography>
+                  <h2 className={classes.instructions}>
+                    Your ticket has been received!
+                  </h2>
+                  <p>
+                    A member of our team will be in contact as soon as possible.
+                    We'll reply to tickets in the order they were received.
+                  </p>
                 </Typography>
                 <Button onClick={this.handleReset} className={classes.button}>
                   Reset
