@@ -4,7 +4,7 @@ import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
-
+import FileDrop from "../FileDrop/FileDrop";
 const styles = theme => ({
   container: {
     display: "block",
@@ -190,6 +190,7 @@ class DetailsForm extends React.Component {
             shrink: true
           }}
         />
+        {/* <FileDrop /> */}
       </form>
     );
   }

@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import AreaForm from "../AreaForm/AreaForm";
 import SubAreaForm from "../SubAreaForm/SubAreaForm";
+import axios from "axios";
 // import SubAreaForm from "../SubAreaForm/SubAreaForm";
 // import UserDetailsForm from "../Home/UserDetailsForm/UserDetailsForm";
 import DetailsForm from "../DetailsForm/DetailsForm";
@@ -130,6 +131,7 @@ class HorizontalLinearStepper extends React.Component {
   handleSubmit = () => {
     const { activeStep } = this.state;
     let { skipped } = this.state;
+    this.sendData();
     if (this.isStepSkipped(activeStep)) {
       skipped = new Set(skipped.values());
       skipped.delete(activeStep);
@@ -139,6 +141,42 @@ class HorizontalLinearStepper extends React.Component {
       activeStep: activeStep + 1,
       skipped
     });
+  };
+  sendData = () => {
+    //then function takes in callback function which handles the result
+    axios.get(`http://jsonplaceholder.typicode.com/users`).then(res => {
+      console.log("axios res--->", res);
+      // console.log(
+      //   "json stringified data - > ",
+      //   JSON.stringify(this.state.userDetails)
+      // );
+    });
+    axios
+      .post(
+        `https://reqres.in/api/users`,
+        {},
+        {
+          auth: {
+            username: "",
+            password: ""
+          }
+        }
+      )
+      .then(function(response) {
+        console.log("response from post --> ", response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    // const headers = new Headers();
+    // headers.append('Content-Type' , 'application/json')
+    // const options  = {
+    //   method: 'POST',
+    //   headers,
+    //   body: JSON.stringify(data)
+    // }
+    // const request = new Request('http://clas.teamwork.com/contact.json' ,options);
+    // const response = await
   };
   handleBack = () => {
     this.setState(state => ({

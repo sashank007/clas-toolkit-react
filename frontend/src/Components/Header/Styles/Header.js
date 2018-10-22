@@ -3,12 +3,11 @@ const drawerWidth = 300;
 export const styles = theme => ({
   root: {
     flexGrow: 1,
-    height: "100vh",
+
     zIndex: 1,
     overflow: "hidden",
     position: "relative",
-    display: "flex",
-    height: "100vh"
+    display: "flex"
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -41,6 +40,7 @@ export const styles = theme => ({
     position: "relative",
     whiteSpace: "nowrap",
     width: drawerWidth,
+    height: "100vh",
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen
@@ -104,6 +104,7 @@ export const styles = theme => ({
   },
   navBar: {
     display: "flex",
+
     justifyContent: "space-between"
   },
   logo: {
