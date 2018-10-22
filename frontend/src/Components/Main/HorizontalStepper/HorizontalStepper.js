@@ -8,10 +8,10 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import AreaForm from "../AreaForm/AreaForm";
 import SubAreaForm from "../SubAreaForm/SubAreaForm";
-import axios from "axios";
 // import SubAreaForm from "../SubAreaForm/SubAreaForm";
 // import UserDetailsForm from "../Home/UserDetailsForm/UserDetailsForm";
 import DetailsForm from "../DetailsForm/DetailsForm";
+import axios from "axios";
 const styles = theme => ({
   stepper: { backgroundColor: "white" },
   shell: {
@@ -74,11 +74,20 @@ class HorizontalLinearStepper extends React.Component {
     subArea: "",
     location: "",
     userDetails: {
-      name: "",
-      emailAddress: "",
+      displayName: "",
+      email: "",
       department: "",
-      phone: "",
-      message: ""
+      firstName: "",
+      lastName: "",
+      customerId: "",
+      photoUrl: "",
+      souce: "support api form",
+      optionalCCS: [],
+      files: [],
+      area: "",
+      inboxId: 1892,
+      subarea: "",
+      customContent: ""
     }
   };
 
@@ -127,57 +136,76 @@ class HorizontalLinearStepper extends React.Component {
       skipped
     });
   };
+  postData = () => {
+    const { userDetails } = this.state;
+    const { area } = this.state;
+    const { subArea } = this.state;
+    axios({
+      method: "get",
+      url: "https://clas.teamwork.com/desk/v1/tickets.json",
+      auth: {
+        username: "0ueH80iKQ5M8duyll58kxqtVPWHJKUt2srbanEgyyL4M2UtcoM",
+        password: ""
+      },
 
+      // data: {
+      //   // displayName: "Sai Sashank Tungaturthi",
+      //   // email: "stungatu@asu.edu",
+      //   // department: "College Of Lib Arts & Sciences",
+      //   // firstName: "Sai Sashank",
+      //   // lastName: "Tungaturthi",
+      //   // customerId: "3258492",
+      //   // photoUrl: "https://webapp4.asu.edu/photo-ws/directory_photo/3258492",
+      //   // source: "support api form",
+      //   // optionalCCS: [],
+      //   // files: [],
+      //   // area: "Web",
+      //   // inboxId: 0,
+      //   // subarea: "General questions/requests",
+      //   // customContent:
+      //   //   '\n\t\t\t\t\t\t<div style="padding:5px;background-color:#f5f5f5;color:#4c4c4c;border-radius:7px;">\n\t\t\t\t\t\t\t\t<h2 style="text-align:center;margin:10px;font-weight:400;">Support Request Submission</h2>\n\t\t\t\t\t\t\t\t<div style="padding-left: 10px;">\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<p>A member of our support team will be in contact as soon as possible, replying to tickets in the order they were received.<br><br>Details of your ticket follow:</p>\n\t\t\t\t\t\t\t\t<p>undefined</p>\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t<p style="text-align:center;">\n\t\t\t\t\t\t\t\t\t\t<img style="width:200px;" alt="College of Liberal Arts and Sciences" src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png">\n\t\t\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>'
+      // }
+      data: {
+        displayName: userDetails.displayName,
+        email: userDetails.email,
+        department: userDetails.department,
+        firstName: userDetails.firstName,
+        lastName: userDetails.lastName,
+        customerId: userDetails.customerId,
+        photoUrl: "https://webapp4.asu.edu/photo-ws/directory_photo/3258492",
+        source: "support api form",
+        optionalCCS: [],
+        files: [],
+        area: area,
+        inboxId: userDetails.inboxId,
+        subarea: subArea,
+        customContent:
+          '\n\t\t\t\t\t\t<div style="padding:5px;background-color:#f5f5f5;color:#4c4c4c;border-radius:7px;">\n\t\t\t\t\t\t\t\t<h2 style="text-align:center;margin:10px;font-weight:400;">Support Request Submission</h2>\n\t\t\t\t\t\t\t\t<div style="padding-left: 10px;">\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<p>A member of our support team will be in contact as soon as possible, replying to tickets in the order they were received.<br><br>Details of your ticket follow:</p>\n\t\t\t\t\t\t\t\t<p>undefined</p>\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t<p style="text-align:center;">\n\t\t\t\t\t\t\t\t\t\t<img style="width:200px;" alt="College of Liberal Arts and Sciences" src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png">\n\t\t\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>'
+      }
+    })
+      .then(response => {
+        console.log("inside post response postData", response);
+      })
+      .catch(error => {
+        console.log("error in post Data", error);
+      });
+  };
   handleSubmit = () => {
     const { activeStep } = this.state;
     let { skipped } = this.state;
-    this.sendData();
     if (this.isStepSkipped(activeStep)) {
       skipped = new Set(skipped.values());
       skipped.delete(activeStep);
     }
+    this.postData();
     console.log("Successfully submitted");
     this.setState({
       activeStep: activeStep + 1,
       skipped
     });
   };
-  sendData = () => {
-    //then function takes in callback function which handles the result
-    axios.get(`http://jsonplaceholder.typicode.com/users`).then(res => {
-      console.log("axios res--->", res);
-      // console.log(
-      //   "json stringified data - > ",
-      //   JSON.stringify(this.state.userDetails)
-      // );
-    });
-    axios
-      .post(
-        `https://reqres.in/api/users`,
-        {},
-        {
-          auth: {
-            username: "",
-            password: ""
-          }
-        }
-      )
-      .then(function(response) {
-        console.log("response from post --> ", response);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-    // const headers = new Headers();
-    // headers.append('Content-Type' , 'application/json')
-    // const options  = {
-    //   method: 'POST',
-    //   headers,
-    //   body: JSON.stringify(data)
-    // }
-    // const request = new Request('http://clas.teamwork.com/contact.json' ,options);
-    // const response = await
-  };
+  //make the api post call
+
   handleBack = () => {
     this.setState(state => ({
       activeStep: state.activeStep - 1
@@ -187,11 +215,15 @@ class HorizontalLinearStepper extends React.Component {
   handleSetDetailValue = state => {
     console.log("Handle Set Detail Value in horizontal stepper -->", state);
     let userDetails = { ...this.state.userDetails };
-    userDetails.name = state.name;
+    userDetails.displayName = state.displayName;
+    userDetails.firstName = state.firstName;
+    userDetails.lastName = state.lastName;
+    userDetails.customerId = state.id;
     userDetails.department = state.department;
-    userDetails.emailAddress = state.emailAddress;
+    userDetails.email = state.emailAddress;
     userDetails.phone = state.phone;
-    userDetails.message = state.message;
+    userDetails.customContent = state.customContent;
+    userDetails.inboxId = state.inboxId;
     this.setState({ userDetails }, function() {
       console.log("set the state in horizontal stepper", this.state);
     });

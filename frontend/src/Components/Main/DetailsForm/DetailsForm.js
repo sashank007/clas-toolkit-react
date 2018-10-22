@@ -37,41 +37,55 @@ const styles = theme => ({
 });
 
 class DetailsForm extends React.Component {
-  fetchData() {
-    this.setState({ ...this.state, isFetching: true });
-    fetch("/api/backend/currentuser")
-      .then(response => response.json())
-      .then(result =>
-        this.setState(
-          {
-            currentUser: result.docs[0],
-            name: result.docs[0].firstName + " " + result.docs[0].lastName,
-            emailAddress: result.docs[0].emailAddress,
-            department: result.docs[0].primaryDepartment,
-            isFetching: false
-          },
-          function() {
-            console.log("currentUser in fetch", this.state);
-          }
-        )
-      );
-  }
-
   constructor() {
     super();
     console.log("constructor called");
     this.state = {
       currentUser: {},
       isFetching: false,
-      name: "",
+      displayName: "",
+      firstName: "",
+      lastName: "",
+      id: "",
       department: "",
       emailAddress: "",
       phone: "",
-      message: ""
+      message: "",
+      inboxId: 0
     };
     // this.fetchData();
     console.log("component mounted", this.state);
   }
+
+  fetchData() {
+    this.setState({ ...this.state, isFetching: true });
+    fetch("/api/backend/currentuser")
+      .then(response => response.json())
+      .then(result => {
+        console.log("result from fetchData ->", result);
+        this.setState(
+          {
+            currentUser: result.docs[0],
+            firstName: result.docs[0].firstName,
+            lastName: result.docs[0].lastName,
+            id: result.docs[0].eid,
+            displayName: result.docs[0].displayName,
+            emailAddress: result.docs[0].emailAddress,
+            department: result.docs[0].primaryDepartment,
+            isFetching: false,
+            customContent: "",
+            inboxId: parseInt(result.docs[0].primaryMailCode)
+          },
+          function() {
+            console.log("currentUser in fetch", this.state);
+          }
+        );
+      })
+      .then(() => {
+        this.props.detailsValue(this.state);
+      });
+  }
+
   handleChange = value => event => {
     this.setState(
       {
@@ -81,23 +95,14 @@ class DetailsForm extends React.Component {
         console.log("current userDetails:", this.state);
       }
     );
-    // let currentUser = { ...this.state.currentUser };
-    // currentUser.value = event.target.value;
-    // this.setState({ currentUser }, function() {
-    //   console.log("new state of current user --> ", this.state.currentUser);
-    // });
-    this.props.detailsValue(this.state);
   };
   handle;
   componentWillMount() {
-    // this.fetchData();
     console.log("component did mount --> ", this.state.currentUser);
-    // this.state.currentUser.docs
-    //   ? this.setState({ name: this.state.currentUser.docs[0].firstName })
-    //   : null;
   }
   componentDidMount() {
     this.fetchData();
+    this.props.detailsValue(this.state);
     // this.setState({ name: "" });
     console.log("component did mount -->", this.state.currentUser);
   }
@@ -111,8 +116,6 @@ class DetailsForm extends React.Component {
       isFetching
     } = this.state;
     const testValue = "test";
-    // const { emailAddress } =
-    //   currentUser.docs && currentUser.docs[0].emailAddress;
     return (
       <form className={classes.container} noValidate autoComplete="off">
         <h3
