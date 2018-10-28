@@ -1,12 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import ComputerImage from "../../../Assets/Images/computerWallpaper.jpg";
-import WebImage from "../../../Assets/Images/web.jpg";
-import MarketingImage from "../../../Assets/Images/marketingwallpaper.jpg";
-import EventsImage from "../../../Assets/Images/events.jpg";
-import SalesImage from "../../../Assets/Images/sales.jpg";
-
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
@@ -155,7 +149,7 @@ class ButtonBases extends React.Component {
       areas: [
         {
           id: 0,
-          img: ComputerImage,
+
           title: "IT",
           width: "30%",
           checkMark: false,
@@ -164,7 +158,7 @@ class ButtonBases extends React.Component {
         },
         {
           id: 1,
-          img: WebImage,
+
           title: "Web",
           width: "30%",
           checkMark: false,
@@ -173,7 +167,7 @@ class ButtonBases extends React.Component {
         },
         {
           id: 2,
-          img: MarketingImage,
+
           title: "Marketing/Design",
           width: "30%",
           checkMark: false,
@@ -182,7 +176,7 @@ class ButtonBases extends React.Component {
         },
         {
           id: 3,
-          img: EventsImage,
+
           title: "Events",
           width: "30%",
           checkMark: false,
@@ -191,7 +185,7 @@ class ButtonBases extends React.Component {
         },
         {
           id: 4,
-          img: SalesImage,
+
           title: "SalesForce/Qualtrics",
           width: "30%",
           checkMark: false,
@@ -207,7 +201,6 @@ class ButtonBases extends React.Component {
     const { areas } = this.state;
     this.props.handleParentClick(key);
     console.log("key -->", key);
-    // this.areas[key].checkMark = true;
     areas[key].checkMark = !areas[key].checkMark;
     this.setState({ areas });
     console.log(areas[key]);
