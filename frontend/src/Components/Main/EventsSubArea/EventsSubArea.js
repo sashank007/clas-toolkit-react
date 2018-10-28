@@ -5,7 +5,6 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 
 class EventsSubArea extends React.Component {
-  // vm.supportFormData.inboxId = 1892
   constructor() {
     super();
     this.radioItems = ["Event request", "Other questions"];
@@ -42,7 +41,6 @@ class EventsSubArea extends React.Component {
         <RadioGroup
           aria-label="SubArea-Events"
           name="SubArea-Events"
-          // className={classes.group}
           value={this.state.value}
           onChange={this.handleChange}
         >

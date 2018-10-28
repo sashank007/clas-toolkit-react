@@ -10,14 +10,6 @@ const styles = theme => ({
     display: "block",
     flexWrap: "wrap",
     justifyContent: "center"
-    // // display: "inline-block",
-    // flexWrap: "wrap",
-    // width: "50%"
-    // display: "flex",
-    // flexWrap: "wrap",
-    // display: "wrap",
-
-    // marginTop: 40
   },
   message: {
     height: 120

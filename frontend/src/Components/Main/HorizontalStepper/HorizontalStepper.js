@@ -8,12 +8,9 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import AreaForm from "../AreaForm/AreaForm";
 import SubAreaForm from "../SubAreaForm/SubAreaForm";
-// import SubAreaForm from "../SubAreaForm/SubAreaForm";
-// import UserDetailsForm from "../Home/UserDetailsForm/UserDetailsForm";
 import DetailsForm from "../DetailsForm/DetailsForm";
 import FadeSnackBar from "../FadeSnackBar/FadeSnackBar";
 import axios from "axios";
-import FileDrop from "../FileDrop/FileDrop";
 const styles = theme => ({
   stepper: { backgroundColor: "white" },
   shell: {

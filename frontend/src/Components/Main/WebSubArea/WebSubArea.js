@@ -4,7 +4,6 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 class WebSubArea extends React.Component {
-  // vm.supportFormData.inboxId = 1892
   constructor() {
     super();
     this.radioItems = [
