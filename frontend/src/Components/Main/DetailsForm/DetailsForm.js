@@ -4,7 +4,7 @@ import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
-import FileDrop from "../FileDrop/FileDrop";
+import FileDropper from "../FileDrop/FileDrop";
 const styles = theme => ({
   container: {
     display: "block",
@@ -95,8 +95,8 @@ class DetailsForm extends React.Component {
         console.log("current userDetails:", this.state);
       }
     );
+    this.props.detailsValue(this.state);
   };
-  handle;
   componentWillMount() {
     console.log("component did mount --> ", this.state.currentUser);
   }
@@ -110,7 +110,7 @@ class DetailsForm extends React.Component {
     const { classes } = this.props;
     const {
       currentUser,
-      name,
+      displayName,
       emailAddress,
       department,
       isFetching
@@ -136,7 +136,7 @@ class DetailsForm extends React.Component {
           id="outlined-name"
           label="Name"
           className={classes.textField}
-          value={!isFetching && name}
+          value={!isFetching && displayName}
           onChange={this.handleChange("name")}
           margin="normal"
           variant="outlined"
@@ -193,7 +193,7 @@ class DetailsForm extends React.Component {
             shrink: true
           }}
         />
-        {/* <FileDrop /> */}
+        <FileDropper />
       </form>
     );
   }

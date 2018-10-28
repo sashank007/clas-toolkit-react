@@ -1,23 +1,17 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import Typography from "@material-ui/core/Typography";
 import ComputerImage from "../../../Assets/Images/computerWallpaper.jpg";
 import WebImage from "../../../Assets/Images/web.jpg";
 import MarketingImage from "../../../Assets/Images/marketingwallpaper.jpg";
 import EventsImage from "../../../Assets/Images/events.jpg";
 import SalesImage from "../../../Assets/Images/sales.jpg";
-import classNames from "classnames";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
+
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import WebFont from "webfontloader";
 import { SvgIcon } from "@material-ui/core";
-import CheckMark from "./CheckMark";
 WebFont.load({
   google: {
     families: ["Titillium Web:300,400,700", "sans-serif", "Nocturno Regular 26"]
@@ -84,7 +78,7 @@ const styles = theme => ({
     position: "relative",
 
     [theme.breakpoints.down("xs")]: {
-      width: "100% !important", // Overrides inline-style
+      width: "100% !important",
       height: 100
     },
     "&:click": {
@@ -245,14 +239,6 @@ class ButtonBases extends React.Component {
                     <SvgIcon className={classes.icon}>
                       <path fill="#607D8B" d={area.path} />
                     </SvgIcon>
-                    {/* <CheckMark className={classes.checkMark} />
-                    {area.checkMark ? (
-                      <CheckMark />
-                    ) : (
-                      <SvgIcon className={classes.icon}>
-                        <path d={area.path} />
-                      </SvgIcon>
-                    )} */}
                     <p className={classes.text}>{area.title}</p>
                   </Paper>
                 </Button>
@@ -264,121 +250,6 @@ class ButtonBases extends React.Component {
     );
   }
 }
-
-// <div className={classes.root}>
-//   {areas.map(image => (
-//     <Card style={{ width: "10%" }} className={classes.card}>
-//       <CardContent>
-//         <Typography
-//           className={classes.title}
-//           color="textSecondary"
-//           gutterBottom
-//         >
-//           Word of the Day
-//         </Typography>
-//         <Typography variant="h5" component="h2">
-//           benovelant
-//         </Typography>
-//         <Typography className={classes.pos} color="textSecondary">
-//           adjective
-//         </Typography>
-//         <Typography component="p">
-//           well meaning and kindly.
-//           <br />
-//           {'"a benevolent smile"'}
-//         </Typography>
-//       </CardContent>
-//       <CardActions>
-//         <Button size="small">Learn More</Button>
-//       </CardActions>
-//     </Card>
-// <ButtonBase
-//   focusRipple
-//   // onClick={this.handleChildClick}
-//   key={image.title}
-//   className={classes.image}
-//   style={{ backgroundColor: "white" }}
-//   onClick={this.handleClick.bind(this, image.id)}
-//   focusVisibleClassName={classes.focusVisible}
-//   style={{
-//     width: image.width
-//   }}
-// >
-//   <span
-//     className={classes.imageSrc}
-//     style={{
-//       backgroundImage: `url(${image.img})`
-//     }}
-//   />
-//   <span className={classes.imageBackdrop} />
-//   <span className={classes.imageButton}>
-//     <Typography
-//       component="span"
-//       variant="subtitle1"
-//       color="inherit"
-//       className={classes.imageTitle}
-//     >
-//       {image.title}
-//       <span className={classes.imageMarked} />
-//     </Typography>
-//   </span>
-// </ButtonBase>
-//       ))}
-//     </div>
-//   );
-// }
-
-// function ButtonBases(props) {
-//   const { classes } = props;
-
-//   function handleClick() {
-//     console.log("clicked");
-//   }
-//   const state = {
-//     clicked: "clicked"
-//   };
-
-//   //   function handleChildClick() {
-//   //     console.log("clicked inside child");
-//   //     this.props.handleParentClick("clicked p");
-//   //   }
-//   return (
-//     <div className={classes.root}>
-//       {images.map(image => (
-//         <ButtonBase
-//           focusRipple
-//           // onClick={this.handleChildClick}
-//           key={image.title}
-//           className={classes.image}
-//           onClick={this.handleClick}
-//           focusVisibleClassName={classes.focusVisible}
-//           style={{
-//             width: image.width
-//           }}
-//         >
-//           <span
-//             className={classes.imageSrc}
-//             style={{
-//               backgroundImage: `url(${image.img})`
-//             }}
-//           />
-//           <span className={classes.imageBackdrop} />
-//           <span className={classes.imageButton}>
-//             <Typography
-//               component="span"
-//               variant="subtitle1"
-//               color="inherit"
-//               className={classes.imageTitle}
-//             >
-//               {image.title}
-//               <span className={classes.imageMarked} />
-//             </Typography>
-//           </span>
-//         </ButtonBase>
-//       ))}
-//     </div>
-//   );
-// }
 
 ButtonBases.propTypes = {
   classes: PropTypes.object.isRequired

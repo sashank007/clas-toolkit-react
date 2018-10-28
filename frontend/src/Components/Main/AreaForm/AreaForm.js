@@ -1,17 +1,17 @@
 import React, { Component } from "react";
-import CardComponent from "../Card/CardComponent";
 import ComplexButtons from "../ComplexButtons/ComplexButtons";
-import SecurityReview from "../SecurityReview/SecurityReview";
-import { withStyles } from "@material-ui/core/styles";
+
 class AreaForm extends React.Component {
   constructor() {
     super();
-    this.sendAreaButton = this.sendAreaButton.bind(this);
+    this.sendAreaValue = this.sendAreaValue.bind(this);
   }
 
-  sendAreaButton = area => {
+  sendAreaValue = area => {
     console.log(area + " inside AreaForm");
     this.props.setArea(area);
+    const inboxIds = [2171, 1892, 2153, 2169, 2170];
+    this.props.setInboxId(inboxIds[area]);
   };
   render() {
     return (
@@ -30,8 +30,7 @@ class AreaForm extends React.Component {
           Select a box that applies to you.
         </p>
         <br />
-        <ComplexButtons handleParentClick={this.sendAreaButton} />
-        {/* <SecurityReview parentProps={this.onParentClick} /> */}
+        <ComplexButtons handleParentClick={this.sendAreaValue} />
       </div>
     );
   }

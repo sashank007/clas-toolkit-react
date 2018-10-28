@@ -64,3 +64,30 @@
 //     );
 //   }
 // }
+
+import React from "react";
+import FileDrop from "react-file-drop";
+
+class FileDropper extends React.Component {
+  handleDrop = (files, event) => {
+    console.log(files, event);
+  };
+
+  render() {
+    const styles = {
+      border: "1px solid black",
+      width: "100%",
+      color: "black",
+      height: "30%",
+      padding: 20
+    };
+
+    return (
+      <div id="react-file-drop-demo" style={styles}>
+        <FileDrop onDrop={this.handleDrop}>Drop some files here!</FileDrop>
+      </div>
+    );
+  }
+}
+
+export default FileDropper;

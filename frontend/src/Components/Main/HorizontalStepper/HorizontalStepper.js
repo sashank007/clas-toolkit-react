@@ -11,7 +11,9 @@ import SubAreaForm from "../SubAreaForm/SubAreaForm";
 // import SubAreaForm from "../SubAreaForm/SubAreaForm";
 // import UserDetailsForm from "../Home/UserDetailsForm/UserDetailsForm";
 import DetailsForm from "../DetailsForm/DetailsForm";
+import FadeSnackBar from "../FadeSnackBar/FadeSnackBar";
 import axios from "axios";
+import FileDrop from "../FileDrop/FileDrop";
 const styles = theme => ({
   stepper: { backgroundColor: "white" },
   shell: {
@@ -40,35 +42,11 @@ function getSteps() {
   return ["Select Area", "Select Sub Area", "Confirm Details"];
 }
 
-// function getStepContent(step) {
-
-//   switch (step) {
-//     case 0:
-//       return (
-//         <div style={componentStyle}>
-//           <AreaForm setArea={this.handleSetArea} />
-//         </div>
-//       );
-//     case 1:
-//       return (
-//         <div style={componentStyle}>
-//           <SubAreaForm />
-//         </div>
-//       );
-//     case 2:
-//       return (
-//         <div style={componentStyle}>
-//           <DetailsForm />
-//         </div>
-//       );
-//     default:
-//       return "Unknown step";
-//   }
-// }
-
 class HorizontalLinearStepper extends React.Component {
   state = {
     activeStep: 0,
+    showSnackBar: false,
+    snackBarMessage: "",
     skipped: new Set(),
     area: "",
     subArea: "",
@@ -79,15 +57,19 @@ class HorizontalLinearStepper extends React.Component {
       department: "",
       firstName: "",
       lastName: "",
+      phone: "",
       customerId: "",
       photoUrl: "",
       souce: "support api form",
       optionalCCS: [],
       files: [],
       area: "",
+      message: "",
       inboxId: 1892,
       subarea: "",
-      customContent: ""
+      switchIndex: 0,
+      customContent: "",
+      subject: ""
     }
   };
 
@@ -96,13 +78,17 @@ class HorizontalLinearStepper extends React.Component {
       case 0:
         return (
           <div style={componentStyle}>
-            <AreaForm setArea={this.handleSetArea} />
+            <AreaForm
+              setArea={this.handleSetArea}
+              setInboxId={this.handleSetInboxId}
+            />
           </div>
         );
       case 1:
         return (
           <div style={componentStyle}>
             <SubAreaForm
+              switchIndex={this.state.switchIndex}
               subAreaValue={this.handleSetSubArea}
               subAreaLocation={this.handleSetSubAreaLocation}
             />
@@ -118,76 +104,150 @@ class HorizontalLinearStepper extends React.Component {
         return "Unknown step";
     }
   }
-
+  validateAreaForm() {
+    const { area } = this.state;
+    return area.length > 0;
+  }
+  validateSubAreaForm() {
+    const { subArea } = this.state;
+    return subArea.length > 0;
+  }
+  validateDetailsForm() {
+    const { message } = this.state;
+    return message.length > 0;
+  }
   isStepOptional = step => {
     return step === 1;
   };
-
   handleNext = () => {
     const { activeStep } = this.state;
     let { skipped } = this.state;
-    if (this.isStepSkipped(activeStep)) {
-      skipped = new Set(skipped.values());
-      skipped.delete(activeStep);
-    }
 
-    this.setState({
-      activeStep: activeStep + 1,
-      skipped
-    });
+    if (activeStep == 0 && !this.validateAreaForm()) {
+      console.log("required fields not filled for area");
+      this.setState({
+        showSnackBar: true,
+        snackBarMessage: "Please pick an area."
+      });
+      setTimeout(() => {
+        this.setState({
+          showSnackBar: false
+        });
+      }, 2500);
+    } else if (activeStep == 1 && !this.validateSubAreaForm()) {
+      console.log("required fields not filled subarea");
+      this.setState({
+        showSnackBar: true,
+        snackBarMessage: "Please pick a sub area."
+      });
+      setTimeout(() => {
+        this.setState({
+          showSnackBar: false
+        });
+      }, 2500);
+    } else {
+      this.setState({
+        activeStep: activeStep + 1,
+        skipped
+      });
+    }
   };
   postData = () => {
     const { userDetails } = this.state;
     const { area } = this.state;
     const { subArea } = this.state;
-    axios({
-      method: "get",
-      url: "https://clas.teamwork.com/desk/v1/tickets.json",
-      auth: {
-        username: "0ueH80iKQ5M8duyll58kxqtVPWHJKUt2srbanEgyyL4M2UtcoM",
-        password: ""
-      },
 
-      // data: {
-      //   // displayName: "Sai Sashank Tungaturthi",
-      //   // email: "stungatu@asu.edu",
-      //   // department: "College Of Lib Arts & Sciences",
-      //   // firstName: "Sai Sashank",
-      //   // lastName: "Tungaturthi",
-      //   // customerId: "3258492",
-      //   // photoUrl: "https://webapp4.asu.edu/photo-ws/directory_photo/3258492",
-      //   // source: "support api form",
-      //   // optionalCCS: [],
-      //   // files: [],
-      //   // area: "Web",
-      //   // inboxId: 0,
-      //   // subarea: "General questions/requests",
-      //   // customContent:
-      //   //   '\n\t\t\t\t\t\t<div style="padding:5px;background-color:#f5f5f5;color:#4c4c4c;border-radius:7px;">\n\t\t\t\t\t\t\t\t<h2 style="text-align:center;margin:10px;font-weight:400;">Support Request Submission</h2>\n\t\t\t\t\t\t\t\t<div style="padding-left: 10px;">\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<p>A member of our support team will be in contact as soon as possible, replying to tickets in the order they were received.<br><br>Details of your ticket follow:</p>\n\t\t\t\t\t\t\t\t<p>undefined</p>\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t<p style="text-align:center;">\n\t\t\t\t\t\t\t\t\t\t<img style="width:200px;" alt="College of Liberal Arts and Sciences" src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png">\n\t\t\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>'
-      // }
-      data: {
-        displayName: userDetails.displayName,
-        email: userDetails.email,
-        department: userDetails.department,
-        firstName: userDetails.firstName,
-        lastName: userDetails.lastName,
-        customerId: userDetails.customerId,
-        photoUrl: "https://webapp4.asu.edu/photo-ws/directory_photo/3258492",
-        source: "support api form",
-        optionalCCS: [],
-        files: [],
-        area: area,
-        inboxId: userDetails.inboxId,
-        subarea: subArea,
-        customContent:
-          '\n\t\t\t\t\t\t<div style="padding:5px;background-color:#f5f5f5;color:#4c4c4c;border-radius:7px;">\n\t\t\t\t\t\t\t\t<h2 style="text-align:center;margin:10px;font-weight:400;">Support Request Submission</h2>\n\t\t\t\t\t\t\t\t<div style="padding-left: 10px;">\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<p>A member of our support team will be in contact as soon as possible, replying to tickets in the order they were received.<br><br>Details of your ticket follow:</p>\n\t\t\t\t\t\t\t\t<p>undefined</p>\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t<p style="text-align:center;">\n\t\t\t\t\t\t\t\t\t\t<img style="width:200px;" alt="College of Liberal Arts and Sciences" src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png">\n\t\t\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>'
-      }
-    })
+    let data = JSON.stringify({
+      displayName: userDetails.displayName,
+      email: userDetails.email,
+      phone: userDetails.phone,
+      department: userDetails.department,
+      firstName: userDetails.firstName,
+      lastName: userDetails.lastName,
+      // customerId: parseInt(userDetails.customerId),
+      customerId: 520146,
+      photoUrl: userDetails.photoUrl,
+      source: "support api form",
+      optionalCCS: [],
+      files: [],
+      area: userDetails.area,
+      inboxId: userDetails.inboxId,
+      subarea: userDetails.subarea,
+      subject: "userDetails.subarea",
+      message: userDetails.message,
+      customContent: userDetails.customContent
+    });
+    axios
+      .post(
+        "https://clas.teamwork.com/desk/v1/tickets.json",
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json"
+          },
+          auth: {
+            username: "0ueH80iKQ5M8duyll58kxqtVPWHJKUt2srbanEgyyL4M2UtcoM",
+            password: ""
+          }
+        }
+
+        // data: {
+        //   displayName: "Sai Sashank Tungaturthi",
+        //   email: "stungatu@asu.edu",
+        //   department: "College Of Lib Arts & Sciences",
+        //   firstName: "Sai Sashank",
+        //   lastName: "Tungaturthi",
+        //   customerId: "3258492",
+        //   photoUrl: "https://webapp4.asu.edu/photo-ws/directory_photo/3258492",
+        //   source: "support api form",
+        //   optionalCCS: [],
+        //   files: [],
+        //   area: "Web",
+        //   inboxId: 1892,
+        //   subarea: "General questions/requests",
+        //   customContent:
+        //     '\n\t\t\t\t\t\t<div style="padding:5px;background-color:#f5f5f5;color:#4c4c4c;border-radius:7px;">\n\t\t\t\t\t\t\t\t<h2 style="text-align:center;margin:10px;font-weight:400;">Support Request Submission</h2>\n\t\t\t\t\t\t\t\t<div style="padding-left: 10px;">\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<p>A member of our support team will be in contact as soon as possible, replying to tickets in the order they were received.<br><br>Details of your ticket follow:</p>\n\t\t\t\t\t\t\t\t<p>undefined</p>\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t<p style="text-align:center;">\n\t\t\t\t\t\t\t\t\t\t<img style="width:200px;" alt="College of Liberal Arts and Sciences" src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png">\n\t\t\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>'
+        // }
+        // data: {
+        //   // displayName: "Sai Sashank Tungaturthi",
+        //   // email: "stungatu@asu.edu",
+        //   // department: "College Of Lib Arts & Sciences",
+        //   // firstName: "Sai Sashank",
+        //   // lastName: "Tungaturthi",
+        //   // customerId: "3258492",
+        //   // photoUrl: "https://webapp4.asu.edu/photo-ws/directory_photo/3258492",
+        //   // source: "support api form",
+        //   // optionalCCS: [],
+        //   // files: [],
+        //   // area: "Web",
+        //   // inboxId: 0,
+        //   // subarea: "General questions/requests",
+        //   // customContent:
+        //   //   '\n\t\t\t\t\t\t<div style="padding:5px;background-color:#f5f5f5;color:#4c4c4c;border-radius:7px;">\n\t\t\t\t\t\t\t\t<h2 style="text-align:center;margin:10px;font-weight:400;">Support Request Submission</h2>\n\t\t\t\t\t\t\t\t<div style="padding-left: 10px;">\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<p>A member of our support team will be in contact as soon as possible, replying to tickets in the order they were received.<br><br>Details of your ticket follow:</p>\n\t\t\t\t\t\t\t\t<p>undefined</p>\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t<p style="text-align:center;">\n\t\t\t\t\t\t\t\t\t\t<img style="width:200px;" alt="College of Liberal Arts and Sciences" src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png">\n\t\t\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>'
+        // }
+        // data: {
+        //   displayName: userDetails.displayName,
+        //   email: userDetails.email,
+        //   department: userDetails.department,
+        //   firstName: userDetails.firstName,
+        //   lastName: userDetails.lastName,
+        //   customerId: userDetails.customerId,
+        //   // photoUrl: "https://webapp4.asu.edu/photo-ws/directory_photo/3258492",
+        //   source: "support api form",
+        //   optionalCCS: [],
+        //   files: [],
+        //   area: area,
+        //   inboxId: 2171,
+        //   subarea: subArea,
+        //   customContent:
+        //     '\n\t\t\t\t\t\t<div style="padding:5px;background-color:#f5f5f5;color:#4c4c4c;border-radius:7px;">\n\t\t\t\t\t\t\t\t<h2 style="text-align:center;margin:10px;font-weight:400;">Support Request Submission</h2>\n\t\t\t\t\t\t\t\t<div style="padding-left: 10px;">\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<p>A member of our support team will be in contact as soon as possible, replying to tickets in the order they were received.<br><br>Details of your ticket follow:</p>\n\t\t\t\t\t\t\t\t<p>undefined</p>\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t<p style="text-align:center;">\n\t\t\t\t\t\t\t\t\t\t<img style="width:200px;" alt="College of Liberal Arts and Sciences" src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png">\n\t\t\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>'
+        // }
+      )
       .then(response => {
-        console.log("inside post response postData", response);
+        console.log("inside post response postData", data, response);
       })
       .catch(error => {
-        console.log("error in post Data", error);
+        console.log("error -->", data, error.response);
       });
   };
   handleSubmit = () => {
@@ -223,10 +283,24 @@ class HorizontalLinearStepper extends React.Component {
     userDetails.email = state.emailAddress;
     userDetails.phone = state.phone;
     userDetails.customContent = state.customContent;
-    userDetails.inboxId = state.inboxId;
+    userDetails.message = state.message;
+    userDetails.phone = state.phone;
+    // userDetails.inboxId = state.inboxId;
     this.setState({ userDetails }, function() {
       console.log("set the state in horizontal stepper", this.state);
     });
+  };
+  handleSetInboxId = inboxId => {
+    this.setState(
+      prevState => {
+        return {
+          inboxId: inboxId
+        };
+      },
+      function() {
+        console.log("inbox id set -->", this.state.inboxId);
+      }
+    );
   };
   handleSetArea = areaIndex => {
     const { area } = this.state;
@@ -245,11 +319,12 @@ class HorizontalLinearStepper extends React.Component {
     this.setState(
       prevState => {
         return {
-          area: newArea
+          area: newArea,
+          switchIndex: areaIndex
         };
       },
       function() {
-        console.log(this.state);
+        console.log("switch index changed", this.state);
       }
     );
   };
@@ -321,7 +396,7 @@ class HorizontalLinearStepper extends React.Component {
   render() {
     const { classes } = this.props;
     const steps = getSteps();
-    const { activeStep } = this.state;
+    const { activeStep, showSnackBar, snackBarMessage } = this.state;
 
     return (
       <div className={classes.shell}>
@@ -331,9 +406,7 @@ class HorizontalLinearStepper extends React.Component {
               const props = {};
               const labelProps = {};
               if (this.isStepOptional(index)) {
-                labelProps.optional = (
-                  <Typography variant="caption">Optional</Typography>
-                );
+                labelProps.optional = <Typography>Optional</Typography>;
               }
               if (this.isStepSkipped(index)) {
                 props.completed = false;
@@ -374,7 +447,7 @@ class HorizontalLinearStepper extends React.Component {
                   >
                     Back
                   </Button>
-                  {this.isStepOptional(activeStep) && (
+                  {/* {this.isStepOptional(activeStep) && (
                     <Button
                       variant="contained"
                       color="primary"
@@ -383,7 +456,7 @@ class HorizontalLinearStepper extends React.Component {
                     >
                       Skip
                     </Button>
-                  )}
+                  )} */}
                   <Button
                     variant="contained"
                     color="primary"
@@ -396,6 +469,7 @@ class HorizontalLinearStepper extends React.Component {
                   >
                     {activeStep === steps.length - 1 ? "Finish" : "Next"}
                   </Button>
+                  {showSnackBar && <FadeSnackBar message={snackBarMessage} />}
                 </div>
               </div>
             )}
