@@ -5,6 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 import FileDropper from "../FileDrop/FileDrop";
+import FileDroppa from "../FileDroppa/FileDroppa";
 const styles = theme => ({
   container: {
     display: "block",
@@ -54,7 +55,7 @@ class DetailsForm extends React.Component {
     fetch("/api/backend/currentuser")
       .then(response => response.json())
       .then(result => {
-        console.log("result from fetchData ->", result);
+        console.log("result from fetchData ---------->", result);
         this.setState(
           {
             currentUser: result.docs[0],
@@ -185,7 +186,8 @@ class DetailsForm extends React.Component {
             shrink: true
           }}
         />
-        <FileDropper />
+        {/* <FileDropper /> */}
+        <FileDroppa />
       </form>
     );
   }

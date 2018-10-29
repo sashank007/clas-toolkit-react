@@ -11,6 +11,8 @@ import SubAreaForm from "../SubAreaForm/SubAreaForm";
 import DetailsForm from "../DetailsForm/DetailsForm";
 import FadeSnackBar from "../FadeSnackBar/FadeSnackBar";
 import axios from "axios";
+import FileDroppa from "../FileDroppa/FileDroppa";
+import Upload from "material-ui-upload/Upload";
 const styles = theme => ({
   stepper: { backgroundColor: "white" },
   shell: {
@@ -41,6 +43,7 @@ function getSteps() {
 
 class HorizontalLinearStepper extends React.Component {
   state = {
+    selectedFile: null,
     activeStep: 0,
     showSnackBar: false,
     snackBarMessage: "",
@@ -63,13 +66,43 @@ class HorizontalLinearStepper extends React.Component {
       area: "",
       message: "",
       inboxId: 1892,
-      subarea: "",
       switchIndex: 0,
       customContent: "",
       subject: ""
     }
   };
-
+  onDrop = event => {
+    console.log("dropping..");
+    this.setState({
+      selectedFile: event.target.files[0]
+    });
+  };
+  uploadFile = event => {
+    console.log("Uploading...");
+    let file = this.state.selectedFile;
+    let data = new FormData();
+    data.append("file", file, file.fileName);
+    let URL = "https://clas.teamwork.com/desk/v1/upload/attachment";
+    axios
+      .post(URL, data, {
+        headers: {
+          accept: "application/json",
+          "Accept-Language": "en-US,en;q=0.8",
+          "Content-Type": `multipart/form-data; boundary=${data._boundary}`
+        },
+        auth: {
+          username: "0ueH80iKQ5M8duyll58kxqtVPWHJKUt2srbanEgyyL4M2UtcoM",
+          password: ""
+        }
+      })
+      .then(response => {
+        console.log("success", response);
+      })
+      .catch(error => {
+        //handle error
+        console.log("error", error.response);
+      });
+  };
   getStepContent(step) {
     switch (step) {
       case 0:
@@ -95,6 +128,15 @@ class HorizontalLinearStepper extends React.Component {
         return (
           <div style={componentStyle}>
             <DetailsForm detailsValue={this.handleSetDetailValue} />
+            <input type="file" onChange={this.onDrop} />
+
+            <Button
+              variant="outlined"
+              component="span"
+              onClick={this.uploadFile}
+            >
+              Upload
+            </Button>
           </div>
         );
       default:
@@ -153,7 +195,7 @@ class HorizontalLinearStepper extends React.Component {
     const { userDetails } = this.state;
     const { area } = this.state;
     const { subArea } = this.state;
-
+    const { location } = this.state;
     let data = JSON.stringify({
       displayName: userDetails.displayName,
       email: userDetails.email,
@@ -162,84 +204,28 @@ class HorizontalLinearStepper extends React.Component {
       firstName: userDetails.firstName,
       lastName: userDetails.lastName,
       // customerId: parseInt(userDetails.customerId),
-      customerId: 520146,
+      customerId: 3258492,
       photoUrl: userDetails.photoUrl,
       source: "support api form",
       optionalCCS: [],
       files: [],
       area: userDetails.area,
       inboxId: userDetails.inboxId,
-      subarea: userDetails.subarea,
-      subject: "userDetails.subarea",
+      subarea: subArea,
+      subject: subArea + " " + location,
       message: userDetails.message,
       customContent: userDetails.customContent
     });
     axios
-      .post(
-        "https://clas.teamwork.com/desk/v1/tickets.json",
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json"
-          },
-          auth: {
-            username: "0ueH80iKQ5M8duyll58kxqtVPWHJKUt2srbanEgyyL4M2UtcoM",
-            password: ""
-          }
+      .post("https://clas.teamwork.com/desk/v1/tickets.json", data, {
+        headers: {
+          "Content-Type": "application/json"
+        },
+        auth: {
+          username: "0ueH80iKQ5M8duyll58kxqtVPWHJKUt2srbanEgyyL4M2UtcoM",
+          password: ""
         }
-
-        // data: {
-        //   displayName: "Sai Sashank Tungaturthi",
-        //   email: "stungatu@asu.edu",
-        //   department: "College Of Lib Arts & Sciences",
-        //   firstName: "Sai Sashank",
-        //   lastName: "Tungaturthi",
-        //   customerId: "3258492",
-        //   photoUrl: "https://webapp4.asu.edu/photo-ws/directory_photo/3258492",
-        //   source: "support api form",
-        //   optionalCCS: [],
-        //   files: [],
-        //   area: "Web",
-        //   inboxId: 1892,
-        //   subarea: "General questions/requests",
-        //   customContent:
-        //     '\n\t\t\t\t\t\t<div style="padding:5px;background-color:#f5f5f5;color:#4c4c4c;border-radius:7px;">\n\t\t\t\t\t\t\t\t<h2 style="text-align:center;margin:10px;font-weight:400;">Support Request Submission</h2>\n\t\t\t\t\t\t\t\t<div style="padding-left: 10px;">\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<p>A member of our support team will be in contact as soon as possible, replying to tickets in the order they were received.<br><br>Details of your ticket follow:</p>\n\t\t\t\t\t\t\t\t<p>undefined</p>\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t<p style="text-align:center;">\n\t\t\t\t\t\t\t\t\t\t<img style="width:200px;" alt="College of Liberal Arts and Sciences" src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png">\n\t\t\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>'
-        // }
-        // data: {
-        //   // displayName: "Sai Sashank Tungaturthi",
-        //   // email: "stungatu@asu.edu",
-        //   // department: "College Of Lib Arts & Sciences",
-        //   // firstName: "Sai Sashank",
-        //   // lastName: "Tungaturthi",
-        //   // customerId: "3258492",
-        //   // photoUrl: "https://webapp4.asu.edu/photo-ws/directory_photo/3258492",
-        //   // source: "support api form",
-        //   // optionalCCS: [],
-        //   // files: [],
-        //   // area: "Web",
-        //   // inboxId: 0,
-        //   // subarea: "General questions/requests",
-        //   // customContent:
-        //   //   '\n\t\t\t\t\t\t<div style="padding:5px;background-color:#f5f5f5;color:#4c4c4c;border-radius:7px;">\n\t\t\t\t\t\t\t\t<h2 style="text-align:center;margin:10px;font-weight:400;">Support Request Submission</h2>\n\t\t\t\t\t\t\t\t<div style="padding-left: 10px;">\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<p>A member of our support team will be in contact as soon as possible, replying to tickets in the order they were received.<br><br>Details of your ticket follow:</p>\n\t\t\t\t\t\t\t\t<p>undefined</p>\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t<p style="text-align:center;">\n\t\t\t\t\t\t\t\t\t\t<img style="width:200px;" alt="College of Liberal Arts and Sciences" src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png">\n\t\t\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>'
-        // }
-        // data: {
-        //   displayName: userDetails.displayName,
-        //   email: userDetails.email,
-        //   department: userDetails.department,
-        //   firstName: userDetails.firstName,
-        //   lastName: userDetails.lastName,
-        //   customerId: userDetails.customerId,
-        //   // photoUrl: "https://webapp4.asu.edu/photo-ws/directory_photo/3258492",
-        //   source: "support api form",
-        //   optionalCCS: [],
-        //   files: [],
-        //   area: area,
-        //   inboxId: 2171,
-        //   subarea: subArea,
-        //   customContent:
-        //     '\n\t\t\t\t\t\t<div style="padding:5px;background-color:#f5f5f5;color:#4c4c4c;border-radius:7px;">\n\t\t\t\t\t\t\t\t<h2 style="text-align:center;margin:10px;font-weight:400;">Support Request Submission</h2>\n\t\t\t\t\t\t\t\t<div style="padding-left: 10px;">\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<p>A member of our support team will be in contact as soon as possible, replying to tickets in the order they were received.<br><br>Details of your ticket follow:</p>\n\t\t\t\t\t\t\t\t<p>undefined</p>\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t<p style="text-align:center;">\n\t\t\t\t\t\t\t\t\t\t<img style="width:200px;" alt="College of Liberal Arts and Sciences" src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png">\n\t\t\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>'
-        // }
-      )
+      })
       .then(response => {
         console.log("inside post response postData", data, response);
       })
@@ -347,6 +333,7 @@ class HorizontalLinearStepper extends React.Component {
     const { subArea } = this.state;
 
     const newSubArea = subAreaValue;
+    console.log("new sub area -->", newSubArea);
     this.setState(
       prevState => {
         return {
