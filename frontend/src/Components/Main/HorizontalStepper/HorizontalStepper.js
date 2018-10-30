@@ -13,6 +13,7 @@ import FadeSnackBar from "../FadeSnackBar/FadeSnackBar";
 import axios from "axios";
 import FileDroppa from "../FileDroppa/FileDroppa";
 import Upload from "material-ui-upload/Upload";
+import ResizeImage from "react-resize-image";
 const styles = theme => ({
   stepper: { backgroundColor: "white" },
   shell: {
@@ -46,31 +47,34 @@ class HorizontalLinearStepper extends React.Component {
     selectedFile: null,
     activeStep: 0,
     showSnackBar: false,
-    snackBarMessage: "",
+    snackBarMessage: null,
     skipped: new Set(),
-    area: "",
-    subArea: "",
-    location: "",
+    area: null,
+    subArea: null,
+    location: null,
+    fileUrl: null,
+    attachmentId: null,
     userDetails: {
-      displayName: "",
-      email: "",
-      department: "",
-      firstName: "",
-      lastName: "",
-      phone: "",
-      customerId: "",
-      photoUrl: "",
-      souce: "support api form",
+      displayName: null,
+      email: null,
+      department: null,
+      firstName: null,
+      lastName: null,
+      phone: null,
+      customerId: null,
+      photoUrl: null,
+      source: "support api form",
       optionalCCS: [],
       files: [],
-      area: "",
-      message: "",
+      area: null,
+      message: null,
       inboxId: 1892,
       switchIndex: 0,
-      customContent: "",
-      subject: ""
+      customContent: null,
+      subject: null
     }
   };
+
   onDrop = event => {
     console.log("dropping..");
     this.setState({
@@ -81,6 +85,7 @@ class HorizontalLinearStepper extends React.Component {
     console.log("Uploading...");
     let file = this.state.selectedFile;
     let data = new FormData();
+    let { attachmentId, fileUrl } = this.state;
     data.append("file", file, file.fileName);
     let URL = "https://clas.teamwork.com/desk/v1/upload/attachment";
     axios
@@ -91,12 +96,19 @@ class HorizontalLinearStepper extends React.Component {
           "Content-Type": `multipart/form-data; boundary=${data._boundary}`
         },
         auth: {
-          username: "0ueH80iKQ5M8duyll58kxqtVPWHJKUt2srbanEgyyL4M2UtcoM",
-          password: ""
+          // username: "0ueH80iKQ5M8duyll58kxqtVPWHJKUt2srbanEgyyL4M2UtcoM",
+          username: "zMx7pGzRHQaFrbs8WvR9RZXCo5YZ33wuPzNLdrcrRpPIqSMFdQ",
+          password: null
         }
       })
       .then(response => {
         console.log("success", response);
+        attachmentId = response.data.attachment.id;
+        fileUrl = response.data.attachment.downloadURL;
+        this.setState({ attachmentId, fileUrl }, function() {
+          console.log("after setting image", this.state);
+        });
+        console.log("attachment Id recieved -->", attachmentId);
       })
       .catch(error => {
         //handle error
@@ -191,7 +203,108 @@ class HorizontalLinearStepper extends React.Component {
       });
     }
   };
-  postData = () => {
+  postData() {
+    const customContent = `<div style={{"padding:5px;backgroundColor:#f5f5f5;color:#4c4c4c;borderRadius:7px;"}}>
+    <h2
+      {{style="textAlign:center;margin:"10px";fontWeight:400;}}">Support
+      Request Submission
+    </h2>
+    <div style={{padding:left: "10px"}}>
+      <hr>
+        <p>
+          A member of our support team will be in contact as soon as
+          possible, replying to tickets in the order they were received.
+          <br />
+          <br />
+        
+        </p>
+      </hr>
+      <p>  Details of your ticket follow: ${this.state.userDetails.message}</p>
+    </div>
+    <div>
+      <p style={"textAlign:center;"} />
+    
+      <img
+      style={{ width: 100 }}
+
+        alt="College of Liberal Arts and Sciences"
+        src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png"
+      />
+  
+    </div>
+  </div>`;
+    const originalPayload = {
+      displayName: "Sai Sashank Tungaturthi",
+      email: "stungatu@asu.edu",
+      department: "College Of Lib Arts & Sciences",
+      firstName: "Sai Sashank",
+      lastName: "Tungaturthi",
+      customerId: "3258492",
+      photoUrl: "https://webapp4.asu.edu/photo-ws/directory_photo/3258492",
+      source: "support api form",
+      optionalCCS: [],
+      files: [
+        {
+          key: "lfobj9221f4b0d",
+          lfFile: {},
+          lfFileName: "earth.png",
+          lfFileType: "image/png",
+          lfTagType: "image",
+          lfDataUrl:
+            "blob:https://tools.clas.asu.edu/b7daeda0-2d44-415d-880b-84d22f7d149d",
+          isRemote: false
+        }
+      ],
+      area: "Web",
+      inboxId: 1892,
+      subarea: "Update or change a web page",
+      customContent:
+        '\n\t\t\t\t\t\t<div style="padding:5px;background-color:#f5f5f5;color:#4c4c4c;border-radius:7px;">\n\t\t\t\t\t\t\t\t<h2 style="text-align:center;margin:10px;font-weight:400;">Support Request Submission</h2>\n\t\t\t\t\t\t\t\t<div style="padding-left: 10px;">\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<p>A member of our support team will be in contact as soon as possible, replying to tickets in the order they were received.<br><br>Details of your ticket follow:</p>\n\t\t\t\t\t\t\t\t<p>undefined</p>\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t<p style="text-align:center;">\n\t\t\t\t\t\t\t\t\t\t<img style="width:200px;" alt="College of Liberal Arts and Sciences" src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png">\n\t\t\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>',
+      attachments: [22297521]
+    };
+    const attachmentPayload = {
+      displayName: "Sai Sashank Tungaturthi",
+      email: "stungatu@asu.edu",
+      phone: "",
+      department: "College Of Lib Arts & Sciences",
+      firstName: "Sai Sashank",
+      lastName: "Tungaturthi",
+      customerEmail: "stungatu@asu.edu",
+      fileUrl:
+        "https://s3.amazonaws.com/tw-desk/i/166923/attachment/318579.20181030234643322.318579.20181030234643322tYdhF.jpg",
+      photoUrl: null,
+      source: "support api form",
+      optionalCCS: [],
+      files: [],
+      area: null,
+      inboxId: 1892,
+      subarea: "General questions/requests",
+      subject: "General questions/requests null",
+      message:
+        '<div style={{"padding:5px;backgroundColor:#f5f5f5;color:#4c4c4c;borderRadius:7px;"}}>\n    <h2\n      {{style="textAlign:center;margin:"10px";fontWeight:400;}}">Support\n      Request Submission\n    </h2>\n    <div style={{padding:left: "10px"}}>\n      <hr>\n        <p>\n          A member of our support team will be in contact as soon as\n          possible, replying to tickets in the order they were received.\n          <br />\n          <br />\n        \n        </p>\n      </hr>\n      <p>  Details of your ticket follow: </p>\n    </div>\n    <div>\n      <p style={"textAlign:center;"} />\n    \n      <img\n      style={{ width: 100 }}\n\n        alt="College of Liberal Arts and Sciences"\n        src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png"\n      />\n  \n    </div>\n  </div>',
+      attachments: [22297542]
+    };
+    const payloadUpload = {
+      displayName: "Sai Sashank Tungaturthi",
+      email: "stungatu@asu.edu",
+      phone: "",
+      department: "College Of Lib Arts & Sciences",
+      firstName: "Sai Sashank",
+      lastName: "Tungaturthi",
+      customerEmail: "stungatu@asu.edu",
+      fileUrl: null,
+      photoUrl: null,
+      source: "support api form",
+      optionalCCS: [],
+      files: [],
+      area: null,
+      inboxId: 1892,
+      subarea: "iSearch",
+      subject: "iSearch null",
+      message:
+        '<div style={{"padding:5px;backgroundColor:#f5f5f5;color:#4c4c4c;borderRadius:7px;"}}>\n    <h2\n      {{style="textAlign:center;margin:"10px";fontWeight:400;}}">Support\n      Request Submission\n    </h2>\n    <div style={{padding:left: "10px"}}>\n      <hr>\n        <p>\n          A member of our support team will be in contact as soon as\n          possible, replying to tickets in the order they were received.\n          <br />\n          <br />\n        \n        </p>\n      </hr>\n      <p>  Details of your ticket follow: </p>\n    </div>\n    <div>\n      <p style={"textAlign:center;"} />\n    \n      <img\n      style={{ width: 100 }}\n\n        alt="College of Liberal Arts and Sciences"\n        src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png"\n      />\n  \n    </div>\n  </div>',
+      attachments: [null]
+    };
     const { userDetails } = this.state;
     const { area } = this.state;
     const { subArea } = this.state;
@@ -203,18 +316,34 @@ class HorizontalLinearStepper extends React.Component {
       department: userDetails.department,
       firstName: userDetails.firstName,
       lastName: userDetails.lastName,
+      customerEmail: userDetails.email,
+      fileUrl: this.state.fileUrl,
+
       // customerId: parseInt(userDetails.customerId),
-      customerId: 3258492,
+      // customerId: 3258492,
       photoUrl: userDetails.photoUrl,
       source: "support api form",
       optionalCCS: [],
-      files: [],
+      files: [
+        {
+          key: "lfobj9221f4b0d",
+          lfFile: {},
+          lfFileName: "earth.png",
+          lfFileType: "image/png",
+          lfTagType: "image",
+          lfDataUrl:
+            "blob:https://tools.clas.asu.edu/b7daeda0-2d44-415d-880b-84d22f7d149d",
+          isRemote: false
+        }
+      ],
       area: userDetails.area,
       inboxId: userDetails.inboxId,
       subarea: subArea,
       subject: subArea + " " + location,
-      message: userDetails.message,
-      customContent: userDetails.customContent
+      message: customContent,
+      attachments: [this.state.attachmentId]
+      // customContent: userDetails.message,
+      // customContent: customContent
     });
     axios
       .post("https://clas.teamwork.com/desk/v1/tickets.json", data, {
@@ -223,7 +352,7 @@ class HorizontalLinearStepper extends React.Component {
         },
         auth: {
           username: "0ueH80iKQ5M8duyll58kxqtVPWHJKUt2srbanEgyyL4M2UtcoM",
-          password: ""
+          password: null
         }
       })
       .then(response => {
@@ -232,7 +361,7 @@ class HorizontalLinearStepper extends React.Component {
       .catch(error => {
         console.log("error -->", data, error.response);
       });
-  };
+  }
   handleSubmit = () => {
     const { activeStep } = this.state;
     let { skipped } = this.state;
@@ -254,7 +383,44 @@ class HorizontalLinearStepper extends React.Component {
       activeStep: state.activeStep - 1
     }));
   };
+  // myPayload = {
+  //   displayName: "Sai Sashank Tungaturthi",
+  //   email: "stungatu@asu.edu",
+  //   phone: "4802436602",
+  //   department: "College Of Lib Arts & Sciences",
+  //   firstName: "Sai Sashank",
+  //   lastName: "Tungaturthi",
+  //   customerEmail: "stungatu@asu.edu",
+  //   photoUrl: null,
+  //   source: "support api form",
+  //   optionalCCS: [],
+  //   files: [],
+  //   area: null,
+  //   inboxId: 1892,
+  //   subarea: "iSearch",
+  //   subject: "iSearch null",
+  //   message:
+  //     '\n<div style="padding:5px;background-color:#f5f5f5;color:#4c4c4c;border-radius:7px;">\n    <h2 style="text-align:center;margin:10px;font-weight:400;">Support Request Submission</h2>\n    <div style="padding-left: 10px;">\n    <hr>\n    <p>A member of our support team will be in contact as soon as possible, replying to tickets in the order they were received.<br><br>Details of your ticket follow:</p>\n    <p>null</p>\n    <hr>\n    <div>\n      <p style="text-align:center;">\n        <img style="width:200px;" alt="College of Liberal Arts and Sciences" src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png">\n      </p>\n  </div>\n</div>',
+  //   customContent: ""
+  // };
 
+  // x = {
+  //   displayName: "Sai Sashank Tungaturthi",
+  //   email: "stungatu@asu.edu",
+  //   department: "College Of Lib Arts & Sciences",
+  //   firstName: "Sai Sashank",
+  //   lastName: "Tungaturthi",
+  //   customerId: "3258492",
+  //   photoUrl: "https://webapp4.asu.edu/photo-ws/directory_photo/3258492",
+  //   source: "support api form",
+  //   optionalCCS: [],
+  //   files: [],
+  //   area: "Web",
+  //   inboxId: 1892,
+  //   subarea: "General questions/requests",
+  //   customContent:
+  //     '\n\t\t\t\t\t\t<div style="padding:5px;background-color:#f5f5f5;color:#4c4c4c;border-radius:7px;">\n\t\t\t\t\t\t\t\t<h2 style="text-align:center;margin:10px;font-weight:400;">Support Request Submission</h2>\n\t\t\t\t\t\t\t\t<div style="padding-left: 10px;">\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<p>A member of our support team will be in contact as soon as possible, replying to tickets in the order they were received.<br><br>Details of your ticket follow:</p>\n\t\t\t\t\t\t\t\t<p>undefined</p>\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t<p style="text-align:center;">\n\t\t\t\t\t\t\t\t\t\t<img style="width:200px;" alt="College of Liberal Arts and Sciences" src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png">\n\t\t\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>'
+  // };
   handleSetDetailValue = state => {
     console.log("Handle Set Detail Value in horizontal stepper -->", state);
     let userDetails = { ...this.state.userDetails };
@@ -265,7 +431,7 @@ class HorizontalLinearStepper extends React.Component {
     userDetails.department = state.department;
     userDetails.email = state.emailAddress;
     userDetails.phone = state.phone;
-    userDetails.customContent = state.customContent;
+
     userDetails.message = state.message;
     userDetails.phone = state.phone;
     // userDetails.inboxId = state.inboxId;

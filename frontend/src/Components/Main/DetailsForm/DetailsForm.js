@@ -29,6 +29,11 @@ const styles = theme => ({
   }
 });
 
+const test = ` <img
+style={{width:"50%" , height:"100px"}}
+alt="College of Liberal Arts and Sciences"
+src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png"
+/>`;
 class DetailsForm extends React.Component {
   constructor() {
     super();
@@ -78,7 +83,6 @@ class DetailsForm extends React.Component {
         this.props.detailsValue(this.state);
       });
   }
-
   handleChange = value => event => {
     this.setState(
       {
@@ -124,6 +128,7 @@ class DetailsForm extends React.Component {
         <p style={{ color: "#8d9096", fontWeight: "400px" }}>
           Please fill in the form with essential details.
         </p>
+
         <br />
         <TextField
           id="outlined-name"
