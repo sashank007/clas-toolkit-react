@@ -80,7 +80,7 @@ class UserMenu extends Component {
             >
               <Paper>
                 <ClickAwayListener onClickAway={this.handleClose}>
-                  <MenuList className={classes.menuList}>
+                  <MenuList className={classes.menuL2ist}>
                     <MenuItem
                       className={classes.profileMenuItem}
                       onClick={this.handleClose}

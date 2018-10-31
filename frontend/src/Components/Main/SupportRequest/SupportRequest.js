@@ -1,5 +1,5 @@
 import React from "react";
-import HorizontalStepper from "./HorizontalStepper/HorizontalStepper";
+import HorizontalStepper from "../HorizontalStepper/HorizontalStepper";
 
 class SupportRequest extends React.Component {
   render() {

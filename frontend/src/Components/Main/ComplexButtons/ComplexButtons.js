@@ -138,7 +138,7 @@ const styles = theme => ({
   }
 });
 
-class AreaButtons extends React.Component {
+class ButtonBases extends React.Component {
   state = {
     spacing: "40"
   };
@@ -244,8 +244,8 @@ class AreaButtons extends React.Component {
   }
 }
 
-AreaButtons.propTypes = {
+ButtonBases.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(AreaButtons);
+export default withStyles(styles)(ButtonBases);
