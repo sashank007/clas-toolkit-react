@@ -140,7 +140,7 @@ class HorizontalLinearStepper extends React.Component {
         return (
           <div style={componentStyle}>
             <DetailsForm detailsValue={this.handleSetDetailValue} />
-            <input type="file" onChange={this.onDrop} />
+            {/* <input type="file" onChange={this.onDrop} />
 
             <Button
               variant="outlined"
@@ -148,7 +148,7 @@ class HorizontalLinearStepper extends React.Component {
               onClick={this.uploadFile}
             >
               Upload
-            </Button>
+            </Button> */}
           </div>
         );
       default:
@@ -204,14 +204,14 @@ class HorizontalLinearStepper extends React.Component {
     }
   };
   postData() {
-    const customContent = `<div style={{"padding:5px;backgroundColor:#f5f5f5;color:#4c4c4c;borderRadius:7px;"}}>
+    const customContent = `<div style="padding:5px;background-color:#f5f5f5;color:#4c4c4c;border-radius:7px;">
     <h2
-      {{style="textAlign:center;margin:"10px";fontWeight:400;}}">Support
+      style="text-align:center;margin:10px;font-weight:30;">Support
       Request Submission
     </h2>
-    <div style={{padding:left: "10px"}}>
+    <div style="padding:left: 10px;">
       <hr>
-        <p>
+        <p style = "font-size:15px;text-align:center">
           A member of our support team will be in contact as soon as
           possible, replying to tickets in the order they were received.
           <br />
@@ -219,13 +219,15 @@ class HorizontalLinearStepper extends React.Component {
         
         </p>
       </hr>
-      <p>  Details of your ticket follow: ${this.state.userDetails.message}</p>
+      <p style = "font-size:15px;text-align:center">  Details of your ticket follow: ${
+        this.state.userDetails.message
+      }</p>
     </div>
     <div>
-      <p style={"textAlign:center;"} />
+      <p style="text-align:center;"}/>
     
       <img
-      style={{ width: 100 }}
+      style="width: 200px"
 
         alt="College of Liberal Arts and Sciences"
         src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png"
@@ -262,6 +264,7 @@ class HorizontalLinearStepper extends React.Component {
         '\n\t\t\t\t\t\t<div style="padding:5px;background-color:#f5f5f5;color:#4c4c4c;border-radius:7px;">\n\t\t\t\t\t\t\t\t<h2 style="text-align:center;margin:10px;font-weight:400;">Support Request Submission</h2>\n\t\t\t\t\t\t\t\t<div style="padding-left: 10px;">\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<p>A member of our support team will be in contact as soon as possible, replying to tickets in the order they were received.<br><br>Details of your ticket follow:</p>\n\t\t\t\t\t\t\t\t<p>undefined</p>\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t<p style="text-align:center;">\n\t\t\t\t\t\t\t\t\t\t<img style="width:200px;" alt="College of Liberal Arts and Sciences" src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png">\n\t\t\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>',
       attachments: [22297521]
     };
+
     const attachmentPayload = {
       displayName: "Sai Sashank Tungaturthi",
       email: "stungatu@asu.edu",
@@ -271,39 +274,17 @@ class HorizontalLinearStepper extends React.Component {
       lastName: "Tungaturthi",
       customerEmail: "stungatu@asu.edu",
       fileUrl:
-        "https://s3.amazonaws.com/tw-desk/i/166923/attachment/318579.20181030234643322.318579.20181030234643322tYdhF.jpg",
+        "https://s3.amazonaws.com/tw-desk/i/166923/attachment/318579.20181031202430255.318579.20181031202430255rlq0U.png",
       photoUrl: null,
       source: "support api form",
       optionalCCS: [],
-      files: [],
       area: null,
       inboxId: 1892,
-      subarea: "General questions/requests",
-      subject: "General questions/requests null",
+      subarea: "Academic unit or center consulation",
+      subject: "Academic unit or center consulation null",
       message:
-        '<div style={{"padding:5px;backgroundColor:#f5f5f5;color:#4c4c4c;borderRadius:7px;"}}>\n    <h2\n      {{style="textAlign:center;margin:"10px";fontWeight:400;}}">Support\n      Request Submission\n    </h2>\n    <div style={{padding:left: "10px"}}>\n      <hr>\n        <p>\n          A member of our support team will be in contact as soon as\n          possible, replying to tickets in the order they were received.\n          <br />\n          <br />\n        \n        </p>\n      </hr>\n      <p>  Details of your ticket follow: </p>\n    </div>\n    <div>\n      <p style={"textAlign:center;"} />\n    \n      <img\n      style={{ width: 100 }}\n\n        alt="College of Liberal Arts and Sciences"\n        src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png"\n      />\n  \n    </div>\n  </div>',
-      attachments: [22297542]
-    };
-    const payloadUpload = {
-      displayName: "Sai Sashank Tungaturthi",
-      email: "stungatu@asu.edu",
-      phone: "",
-      department: "College Of Lib Arts & Sciences",
-      firstName: "Sai Sashank",
-      lastName: "Tungaturthi",
-      customerEmail: "stungatu@asu.edu",
-      fileUrl: null,
-      photoUrl: null,
-      source: "support api form",
-      optionalCCS: [],
-      files: [],
-      area: null,
-      inboxId: 1892,
-      subarea: "iSearch",
-      subject: "iSearch null",
-      message:
-        '<div style={{"padding:5px;backgroundColor:#f5f5f5;color:#4c4c4c;borderRadius:7px;"}}>\n    <h2\n      {{style="textAlign:center;margin:"10px";fontWeight:400;}}">Support\n      Request Submission\n    </h2>\n    <div style={{padding:left: "10px"}}>\n      <hr>\n        <p>\n          A member of our support team will be in contact as soon as\n          possible, replying to tickets in the order they were received.\n          <br />\n          <br />\n        \n        </p>\n      </hr>\n      <p>  Details of your ticket follow: </p>\n    </div>\n    <div>\n      <p style={"textAlign:center;"} />\n    \n      <img\n      style={{ width: 100 }}\n\n        alt="College of Liberal Arts and Sciences"\n        src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png"\n      />\n  \n    </div>\n  </div>',
-      attachments: [null]
+        '<div style={{"padding:5px;backgroundColor:#f5f5f5;color:#4c4c4c;borderRadius:7px;"}}>\n    <h2\n      {{style="textAlign:center;margin:"10px";fontWeight:400;}}">Support\n      Request Submission\n    </h2>\n    <div style={{padding:left: "10px"}}>\n      <hr>\n        <p>\n          A member of our support team will be in contact as soon as\n          possible, replying to tickets in the order they were received.\n          <br />\n          <br />\n        \n        </p>\n      </hr>\n      <p>  Details of your ticket follow: Tes</p>\n    </div>\n    <div>\n      <p style={"textAlign:center;"} />\n    \n      <img\n      style={{ width: 100 }}\n\n        alt="College of Liberal Arts and Sciences"\n        src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png"\n      />\n  \n    </div>\n  </div>',
+      attachments: [22299580]
     };
     const { userDetails } = this.state;
     const { area } = this.state;
@@ -324,24 +305,25 @@ class HorizontalLinearStepper extends React.Component {
       photoUrl: userDetails.photoUrl,
       source: "support api form",
       optionalCCS: [],
-      files: [
-        {
-          key: "lfobj9221f4b0d",
-          lfFile: {},
-          lfFileName: "earth.png",
-          lfFileType: "image/png",
-          lfTagType: "image",
-          lfDataUrl:
-            "blob:https://tools.clas.asu.edu/b7daeda0-2d44-415d-880b-84d22f7d149d",
-          isRemote: false
-        }
-      ],
+      // files: [
+      //   {
+      //     key: "lfobj9221f4b0d",
+      //     lfFile: {},
+      //     lfFileName: "earth.png",
+      //     lfFileType: "image/png",
+      //     lfTagType: "image",
+      //     lfDataUrl:
+      //       "blob:https://tools.clas.asu.edu/b7daeda0-2d44-415d-880b-84d22f7d149d",
+      //     isRemote: false
+      //   }
+      // ],
       area: userDetails.area,
       inboxId: userDetails.inboxId,
       subarea: subArea,
       subject: subArea + " " + location,
       message: customContent,
-      attachments: [this.state.attachmentId]
+      // attachments: [22297521]
+      attachments: this.state.attachmentIdfhandle
       // customContent: userDetails.message,
       // customContent: customContent
     });
@@ -424,6 +406,7 @@ class HorizontalLinearStepper extends React.Component {
   handleSetDetailValue = state => {
     console.log("Handle Set Detail Value in horizontal stepper -->", state);
     let userDetails = { ...this.state.userDetails };
+
     userDetails.displayName = state.displayName;
     userDetails.firstName = state.firstName;
     userDetails.lastName = state.lastName;
@@ -435,9 +418,16 @@ class HorizontalLinearStepper extends React.Component {
     userDetails.message = state.message;
     userDetails.phone = state.phone;
     // userDetails.inboxId = state.inboxId;
-    this.setState({ userDetails }, function() {
-      console.log("set the state in horizontal stepper", this.state);
-    });
+    this.setState(
+      {
+        userDetails,
+        attachmentId: state.attachmentId,
+        fileUrl: state.filesUrl
+      },
+      function() {
+        console.log("set the state in horizontal stepper", this.state);
+      }
+    );
   };
   handleSetInboxId = inboxId => {
     this.setState(

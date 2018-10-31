@@ -6949,6 +6949,11 @@ react-dom@^16.4.2:
     prop-types "^15.6.2"
     schedule "^0.5.0"
 
+react-drop-to-upload@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-drop-to-upload/-/react-drop-to-upload-1.0.2.tgz#e53369066acb456257822967a5b52b93534461e9"
+  integrity sha512-ci9YucceP0Ycf8+ZIW81C6Xopj8CtkZ6D08RlRCP6qGCvLh/NrNrxhm2b4QawO9KrFZ4kbhuey+nrL4NBXd8Ag==
+
 react-dropzone@^4.2.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-4.3.0.tgz#facdd7db16509772633c9f5200621ac01aa6706f"

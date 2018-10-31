@@ -49,7 +49,9 @@ class DetailsForm extends React.Component {
       emailAddress: "",
       phone: "",
       message: "",
-      inboxId: 0
+      inboxId: 0,
+      attachmentId: [],
+      filesUrl: null
     };
     // this.fetchData();
     console.log("component mounted", this.state);
@@ -83,6 +85,14 @@ class DetailsForm extends React.Component {
         this.props.detailsValue(this.state);
       });
   }
+  handleSendAttachment = childState => {
+    console.log("handle send attachment", childState);
+    this.setState({
+      attachmentId: childState.attachmentId,
+      filesUrl: childState.fileUrl
+    });
+    this.props.detailsValue(this.state);
+  };
   handleChange = value => event => {
     this.setState(
       {
@@ -191,8 +201,8 @@ class DetailsForm extends React.Component {
             shrink: true
           }}
         />
-        {/* <FileDropper /> */}
-        <FileDroppa />
+        <FileDropper sendAttachment={this.handleSendAttachment} />
+        {/* <FileDroppa /> */}
       </form>
     );
   }
