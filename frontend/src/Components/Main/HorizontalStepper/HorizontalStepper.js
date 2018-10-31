@@ -51,7 +51,7 @@ class HorizontalLinearStepper extends React.Component {
     skipped: new Set(),
     area: null,
     subArea: null,
-    location: null,
+    location: "",
     fileUrl: null,
     attachmentId: null,
     userDetails: {
@@ -204,6 +204,44 @@ class HorizontalLinearStepper extends React.Component {
     }
   };
   postData() {
+    const tableContent = `<table style="padding:5px;background-color:#f5f5f5;color:#4c4c4c;border-radius:7px;margin:50px;width:100%">
+    <tr>
+           <td>
+           <h1
+           style="text-align:center;margin:10px;font-weight:30;padding:20px"><b>Support
+           Request Submission</b>
+         </h1></td>
+    </tr>
+    <tr>
+              
+            <tr>
+             <td> 
+           <p style = "font-size:15px;text-align:center;padding:20px">
+             A member of our support team will be in contact as soon as
+             possible, replying to tickets in the order they were received.
+             <br />
+             <br />
+           </p>
+           </td>
+         </tr>
+        
+    <tr>
+           <td>
+         <p style = "font-size:15px;text-align:center">  Details of your ticket follow:<br/> ${
+           this.state.userDetails.message
+         }</p>
+        </td>
+    </tr>
+    <tr>
+           <td style="text-align:center"><img
+           style="width: 300px;"
+
+             alt="College of Liberal Arts and Sciences"
+             src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png"
+           /></td>
+
+    </tr>
+    </table>`;
     const customContent = `<div style="padding:5px;background-color:#f5f5f5;color:#4c4c4c;border-radius:7px;">
     <h2
       style="text-align:center;margin:10px;font-weight:30;">Support
@@ -291,18 +329,17 @@ class HorizontalLinearStepper extends React.Component {
     const { subArea } = this.state;
     const { location } = this.state;
     let data = JSON.stringify({
-      displayName: userDetails.displayName,
-      email: userDetails.email,
-      phone: userDetails.phone,
-      department: userDetails.department,
-      firstName: userDetails.firstName,
-      lastName: userDetails.lastName,
+      customerName: userDetails.displayName,
       customerEmail: userDetails.email,
+      customerfirstName: userDetails.firstName,
+      customerlastName: userDetails.lastName,
+      customerEmail: userDetails.email,
+      customerMobile: userDetails.phone,
+      notifyCustomer: true,
       fileUrl: this.state.fileUrl,
 
       // customerId: parseInt(userDetails.customerId),
       // customerId: 3258492,
-      photoUrl: userDetails.photoUrl,
       source: "support api form",
       optionalCCS: [],
       // files: [
@@ -321,7 +358,7 @@ class HorizontalLinearStepper extends React.Component {
       inboxId: userDetails.inboxId,
       subarea: subArea,
       subject: subArea + " " + location,
-      message: customContent,
+      message: tableContent,
       // attachments: [22297521]
       attachments: this.state.attachmentIdfhandle
       // customContent: userDetails.message,
