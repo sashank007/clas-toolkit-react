@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ComplexButtons from "../ComplexButtons/ComplexButtons";
+import AreaButtons from "../../../AreaButtons/AreaButtons";
 
 class AreaForm extends React.Component {
   constructor() {
@@ -30,7 +30,7 @@ class AreaForm extends React.Component {
           Select a box that applies to you.
         </p>
         <br />
-        <ComplexButtons handleParentClick={this.sendAreaValue} />
+        <AreaButtons handleParentClick={this.sendAreaValue} />
       </div>
     );
   }
