@@ -142,7 +142,7 @@ const styles = theme => ({
   }
 });
 
-class ButtonBases extends React.Component {
+class AreaButtons extends React.Component {
   state = {
     spacing: "40"
   };
@@ -240,19 +240,6 @@ class ButtonBases extends React.Component {
     console.log("areas -->", areas);
     this.setState({ areas });
     this.props.handleParentClick(key);
-    // this.setState({ clicked: !this.clicked });
-    // // const { areas } = this.state;
-
-    // console.log("key -->", key);
-    // areas.map((value, index) => {
-    //   {
-    //     value.checkMark = false;
-    //   }
-    // });
-    // areas[key] = true;
-    // this.setState({ areas }, function() {
-    //   console.log("new areas ", this.state);
-    // });
   };
   render() {
     const { classes } = this.props;
@@ -293,8 +280,8 @@ class ButtonBases extends React.Component {
   }
 }
 
-ButtonBases.propTypes = {
+AreaButtons.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(ButtonBases);
+export default withStyles(styles)(AreaButtons);

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import ITSubArea from "../ITSubArea/ITSubArea";
-import WebSubArea from "../WebSubArea/WebSubArea";
-import MarketingDesignSubArea from "../MarketingDesignSubArea/MarketingDesignSubArea";
-import SalesforceQualtricsSubArea from "../SalesforceQualtricsSubArea/SalesforceQualtricsSubArea";
-import EventsSubArea from "../EventsSubArea/EventsSubArea";
+import ITSubArea from "./ITSubArea/ITSubArea";
+import WebSubArea from "./WebSubArea/WebSubArea";
+import MarketingDesignSubArea from "./MarketingDesignSubArea/MarketingDesignSubArea";
+import SalesforceQualtricsSubArea from "./SalesforceQualtricsSubArea/SalesforceQualtricsSubArea";
+import EventsSubArea from "./EventsSubArea/EventsSubArea";
 class SubAreaForm extends React.Component {
   constructor() {
     super();

@@ -6,14 +6,11 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import AreaForm from "../AreaForm/AreaForm";
+import AreaForm from "./AreaForm/AreaForm";
 import SubAreaForm from "../SubAreaForm/SubAreaForm";
 import DetailsForm from "../DetailsForm/DetailsForm";
 import FadeSnackBar from "../FadeSnackBar/FadeSnackBar";
 import axios from "axios";
-import FileDroppa from "../FileDroppa/FileDroppa";
-import Upload from "material-ui-upload/Upload";
-import ResizeImage from "react-resize-image";
 const styles = theme => ({
   stepper: { backgroundColor: "white" },
   shell: {
@@ -34,7 +31,9 @@ const styles = theme => ({
     marginBottom: theme.spacing.unit
   }
 });
-
+const supportApiForm = "support api form";
+const defaultInbox = 1892;
+const uploadUrl = "https://clas.teamwork.com/desk/v1/upload/attachment";
 const componentStyle = {
   padding: 50
 };
@@ -48,16 +47,17 @@ const snackBarMessages = [
 ];
 class HorizontalLinearStepper extends React.Component {
   state = {
-    selectedFile: null,
+    selectedFiles: [],
     activeStep: 0,
     showSnackBar: false,
     snackBarMessage: null,
     skipped: new Set(),
     area: null,
     subArea: null,
-    location: null,
-    fileUrl: null,
-    attachmentId: null,
+    location: "",
+    fileUrl: [],
+    // stillUploading: false,
+    attachmentId: [],
     userDetails: {
       displayName: null,
       email: null,
@@ -67,12 +67,12 @@ class HorizontalLinearStepper extends React.Component {
       phone: null,
       customerId: null,
       photoUrl: null,
-      source: "support api form",
+      source: supportApiForm,
       optionalCCS: [],
       files: [],
       area: null,
       message: null,
-      inboxId: 1892,
+      inboxId: defaultInbox,
       switchIndex: 0,
       customContent: null,
       subject: null
@@ -85,39 +85,49 @@ class HorizontalLinearStepper extends React.Component {
       selectedFile: event.target.files[0]
     });
   };
-  uploadFile = event => {
+
+  uploadFile = () => {
     console.log("Uploading...");
-    let file = this.state.selectedFile;
-    let data = new FormData();
-    let { attachmentId, fileUrl } = this.state;
-    data.append("file", file, file.fileName);
-    let URL = "https://clas.teamwork.com/desk/v1/upload/attachment";
-    axios
-      .post(URL, data, {
-        headers: {
-          accept: "application/json",
-          "Accept-Language": "en-US,en;q=0.8",
-          "Content-Type": `multipart/form-data; boundary=${data._boundary}`
-        },
-        auth: {
-          // username: "0ueH80iKQ5M8duyll58kxqtVPWHJKUt2srbanEgyyL4M2UtcoM",
-          username: "zMx7pGzRHQaFrbs8WvR9RZXCo5YZ33wuPzNLdrcrRpPIqSMFdQ",
-          password: null
-        }
-      })
-      .then(response => {
-        console.log("success", response);
-        attachmentId = response.data.attachment.id;
-        fileUrl = response.data.attachment.downloadURL;
-        this.setState({ attachmentId, fileUrl }, function() {
-          console.log("after setting image", this.state);
+    let { selectedFiles } = this.state;
+    let attachmentId = this.state.attachmentId.slice();
+    selectedFiles.map((file, index) => {
+      let data = new FormData();
+      // this.setState({ stillUploading: true });
+      // let fileUrl = this.state.fileUrl.slice();
+      console.log("attachment id before post request", attachmentId);
+      data.append("file", file, file.fileName);
+      axios
+        .post(uploadUrl, data, {
+          headers: {
+            accept: "application/json",
+            "Accept-Language": "en-US,en;q=0.8",
+            "Content-Type": `multipart/form-data; boundary=${data._boundary}`
+          },
+          auth: {
+            // username: "0ueH80iKQ5M8duyll58kxqtVPWHJKUt2srbanEgyyL4M2UtcoM",
+            username: "zMx7pGzRHQaFrbs8WvR9RZXCo5YZ33wuPzNLdrcrRpPIqSMFdQ",
+            password: null
+          }
+        })
+        .then(response => {
+          console.log("success", response);
+          attachmentId.push(response.data.attachment.id);
+
+          this.setState({ attachmentId }, function() {
+            console.log("after setting image , callback", this.state);
+          });
+          console.log("index -->", index);
+
+          console.log("attachment Id recieved -->", attachmentId);
+          // this.props.sendAttachment(this.state);
+          if (this.state.attachmentId.length == this.state.selectedFiles.length)
+            this.postData();
+        })
+        .catch(error => {
+          //handle error
+          console.log("error", error.response);
         });
-        console.log("attachment Id recieved -->", attachmentId);
-      })
-      .catch(error => {
-        //handle error
-        console.log("error", error.response);
-      });
+    });
   };
   getStepContent(step) {
     switch (step) {
@@ -143,7 +153,10 @@ class HorizontalLinearStepper extends React.Component {
       case 2:
         return (
           <div style={componentStyle}>
-            <DetailsForm detailsValue={this.handleSetDetailValue} />
+            <DetailsForm
+              detailsValue={this.handleSetDetailValue}
+              selectedFiles={this.handleSelectedFiles}
+            />
             {/* <FileDroppa /> */}
           </div>
         );
@@ -295,10 +308,15 @@ class HorizontalLinearStepper extends React.Component {
         '<div style={{"padding:5px;backgroundColor:#f5f5f5;color:#4c4c4c;borderRadius:7px;"}}>\n    <h2\n      {{style="textAlign:center;margin:"10px";fontWeight:400;}}">Support\n      Request Submission\n    </h2>\n    <div style={{padding:left: "10px"}}>\n      <hr>\n        <p>\n          A member of our support team will be in contact as soon as\n          possible, replying to tickets in the order they were received.\n          <br />\n          <br />\n        \n        </p>\n      </hr>\n      <p>  Details of your ticket follow: Tes</p>\n    </div>\n    <div>\n      <p style={"textAlign:center;"} />\n    \n      <img\n      style={{ width: 100 }}\n\n        alt="College of Liberal Arts and Sciences"\n        src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png"\n      />\n  \n    </div>\n  </div>',
       attachments: [22299580]
     };
-    const { userDetails } = this.state;
-    const { area } = this.state;
-    const { subArea } = this.state;
-    const { location } = this.state;
+    const {
+      location,
+      attachmentId,
+      subArea,
+      area,
+      userDetails,
+      selectedFiles,
+      source
+    } = this.state;
     let data = JSON.stringify({
       customerName: userDetails.displayName,
       customerEmail: userDetails.email,
@@ -308,32 +326,15 @@ class HorizontalLinearStepper extends React.Component {
       customerMobile: userDetails.phone,
       notifyCustomer: true,
       fileUrl: this.state.fileUrl,
-
       // customerId: parseInt(userDetails.customerId),
       // customerId: 3258492,
-      source: "support api form",
-      optionalCCS: [],
-      // files: [
-      //   {
-      //     key: "lfobj9221f4b0d",
-      //     lfFile: {},
-      //     lfFileName: "earth.png",
-      //     lfFileType: "image/png",
-      //     lfTagType: "image",
-      //     lfDataUrl:
-      //       "blob:https://tools.clas.asu.edu/b7daeda0-2d44-415d-880b-84d22f7d149d",
-      //     isRemote: false
-      //   }
-      // ],
-      area: userDetails.area,
+      source: source,
+      area: area,
       inboxId: userDetails.inboxId,
       subarea: subArea,
       subject: subArea + " " + location,
       message: tableContent,
-      // attachments: [22297521]
-      attachments: this.state.attachmentIdfhandle
-      // customContent: userDetails.message,
-      // customContent: customContent
+      attachments: attachmentId
     });
     axios
       .post("https://clas.teamwork.com/desk/v1/tickets.json", data, {
@@ -353,13 +354,14 @@ class HorizontalLinearStepper extends React.Component {
       });
   }
   handleSubmit = () => {
-    const { activeStep } = this.state;
+    const { activeStep, selectedFiles } = this.state;
     let { skipped } = this.state;
     if (this.isStepSkipped(activeStep)) {
       skipped = new Set(skipped.values());
       skipped.delete(activeStep);
     }
-    this.postData();
+    if (selectedFiles.length > 0) this.uploadFile();
+    else this.postData();
     console.log("Successfully submitted");
     this.setState({
       activeStep: activeStep + 1,
@@ -373,44 +375,7 @@ class HorizontalLinearStepper extends React.Component {
       activeStep: state.activeStep - 1
     }));
   };
-  // myPayload = {
-  //   displayName: "Sai Sashank Tungaturthi",
-  //   email: "stungatu@asu.edu",
-  //   phone: "4802436602",
-  //   department: "College Of Lib Arts & Sciences",
-  //   firstName: "Sai Sashank",
-  //   lastName: "Tungaturthi",
-  //   customerEmail: "stungatu@asu.edu",
-  //   photoUrl: null,
-  //   source: "support api form",
-  //   optionalCCS: [],
-  //   files: [],
-  //   area: null,
-  //   inboxId: 1892,
-  //   subarea: "iSearch",
-  //   subject: "iSearch null",
-  //   message:
-  //     '\n<div style="padding:5px;background-color:#f5f5f5;color:#4c4c4c;border-radius:7px;">\n    <h2 style="text-align:center;margin:10px;font-weight:400;">Support Request Submission</h2>\n    <div style="padding-left: 10px;">\n    <hr>\n    <p>A member of our support team will be in contact as soon as possible, replying to tickets in the order they were received.<br><br>Details of your ticket follow:</p>\n    <p>null</p>\n    <hr>\n    <div>\n      <p style="text-align:center;">\n        <img style="width:200px;" alt="College of Liberal Arts and Sciences" src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png">\n      </p>\n  </div>\n</div>',
-  //   customContent: ""
-  // };
 
-  // x = {
-  //   displayName: "Sai Sashank Tungaturthi",
-  //   email: "stungatu@asu.edu",
-  //   department: "College Of Lib Arts & Sciences",
-  //   firstName: "Sai Sashank",
-  //   lastName: "Tungaturthi",
-  //   customerId: "3258492",
-  //   photoUrl: "https://webapp4.asu.edu/photo-ws/directory_photo/3258492",
-  //   source: "support api form",
-  //   optionalCCS: [],
-  //   files: [],
-  //   area: "Web",
-  //   inboxId: 1892,
-  //   subarea: "General questions/requests",
-  //   customContent:
-  //     '\n\t\t\t\t\t\t<div style="padding:5px;background-color:#f5f5f5;color:#4c4c4c;border-radius:7px;">\n\t\t\t\t\t\t\t\t<h2 style="text-align:center;margin:10px;font-weight:400;">Support Request Submission</h2>\n\t\t\t\t\t\t\t\t<div style="padding-left: 10px;">\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<p>A member of our support team will be in contact as soon as possible, replying to tickets in the order they were received.<br><br>Details of your ticket follow:</p>\n\t\t\t\t\t\t\t\t<p>undefined</p>\n\t\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t<p style="text-align:center;">\n\t\t\t\t\t\t\t\t\t\t<img style="width:200px;" alt="College of Liberal Arts and Sciences" src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png">\n\t\t\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>'
-  // };
   handleSetDetailValue = state => {
     console.log("Handle Set Detail Value in horizontal stepper -->", state);
     let userDetails = { ...this.state.userDetails };
@@ -449,6 +414,14 @@ class HorizontalLinearStepper extends React.Component {
       }
     );
   };
+  handleSelectedFiles = files => {
+    console.log("inside horizontal stepper handleselectedfiles", files);
+    let { selectedFiles } = this.state;
+    selectedFiles = files;
+    this.setState({ selectedFiles }, function() {
+      console.log("changed state of selected files", this.state);
+    });
+  };
   handleSetArea = areaIndex => {
     const { area } = this.state;
     const areas = [
@@ -473,38 +446,22 @@ class HorizontalLinearStepper extends React.Component {
     const { location } = this.state;
 
     const newSubAreaLocation = subAreaLocation;
-    this.setState(
-      prevState => {
-        return {
-          location: newSubAreaLocation
-        };
-      }
-      // function() {
-      //   console.log(
-      //     "inside horizontal stepper sub area location --> ",
-      //     this.state
-      //   );
-      // }
-    );
+    this.setState(prevState => {
+      return {
+        location: newSubAreaLocation
+      };
+    });
   };
   handleSetSubArea = subAreaValue => {
     const { subArea } = this.state;
 
     const newSubArea = subAreaValue;
     console.log("new sub area -->", newSubArea);
-    this.setState(
-      prevState => {
-        return {
-          subArea: newSubArea
-        };
-      }
-      // function() {
-      //   console.log(
-      //     "inside horizontal stepper sub area value --> ",
-      //     this.state
-      //   );
-      // }
-    );
+    this.setState(prevState => {
+      return {
+        subArea: newSubArea
+      };
+    });
   };
 
   handleSkip = () => {

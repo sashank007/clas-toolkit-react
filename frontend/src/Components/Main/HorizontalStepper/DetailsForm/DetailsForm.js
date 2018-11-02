@@ -4,9 +4,7 @@ import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
-import FileDropper from "../FileDrop/FileDrop";
-import FileDroppa from "../FileDroppa/FileDroppa";
-import Main from "../FileDroppa/FileDroppa";
+import FileDroppa from "../../FileDroppa/FileDroppa";
 const styles = theme => ({
   container: {
     display: "block",
@@ -86,6 +84,10 @@ class DetailsForm extends React.Component {
         this.props.detailsValue(this.state);
       });
   }
+  handleSelectedFiles = files => {
+    console.log("inside details form handleSelectedFiles", files);
+    this.props.selectedFiles(files);
+  };
   handleSendAttachment = childState => {
     console.log("handle send attachment", childState);
     this.setState({
@@ -203,7 +205,7 @@ class DetailsForm extends React.Component {
           }}
         />
         {/* <FileDropper sendAttachment={this.handleSendAttachment} /> */}
-        <FileDroppa />
+        <FileDroppa selectedFiles={this.handleSelectedFiles} />
       </form>
     );
   }

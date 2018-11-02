@@ -7,7 +7,8 @@ import "./FileDroppa.css";
 class FileDroppa extends React.Component {
   state = {
     value: "image/jpeg, image/png, .jpg, .jpeg, .png",
-    previews: []
+    previews: [],
+    selectedFiles: []
   };
 
   onChange = e => {
@@ -22,6 +23,19 @@ class FileDroppa extends React.Component {
     this.setState({
       previews: newPreviews
     });
+
+    //send selectedFiles to the parent
+  };
+  onChangeFile = e => {
+    console.log("files -->", e.target.files);
+    let file = e.target.files[0];
+    let selectedFiles = this.state.selectedFiles.slice();
+    8;
+    selectedFiles.push(file);
+    this.setState({ selectedFiles }, function() {
+      console.log("callback for selected files in onChangefile", this.state);
+      this.props.selectedFiles(this.state.selectedFiles);
+    });
   };
 
   render() {
@@ -31,7 +45,7 @@ class FileDroppa extends React.Component {
           {/* <input
             className="Dropzone-input"
             onChange={this.onChange}
-            value={this.state.value}
+            value={this.state.value}  
             placeholder="Accept"
             type="text"
           /> */}
@@ -40,6 +54,7 @@ class FileDroppa extends React.Component {
           className="Dropzone"
           accept={this.state.value}
           onDrop={this.onDrop}
+          onChange={this.onChangeFile}
         >
           <div className="Dropzone-content">
             {this.state.previews.length > 0
