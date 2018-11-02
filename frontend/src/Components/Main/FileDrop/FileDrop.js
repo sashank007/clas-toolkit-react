@@ -41,7 +41,7 @@ class FileDropper extends Component {
     console.log(files.length > 0); // true
     console.log(files.length === dataURIs.length); // true
     console.log(files[0] instanceof File); // true
-    console.log(typeof dataURIs[0] === "string"); // true
+    console.log(typeof dataURIs[0] === "string"); // trueX`
     console.log(/^data:(.*);(.*),/.test(dataURIs[0])); // true
   }
   uploadFile = event => {

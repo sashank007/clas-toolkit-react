@@ -28,9 +28,13 @@ const styles = theme => ({
     fontSize: "0.8rem",
     textTransform: "capitalize"
   },
-  buttonNotClicked: {},
+  buttonNotClicked: {
+    border: "5px solid #ffffff",
+    padding: "10px"
+  },
   buttonClicked: {
-    border: "1px solid #42A5F5"
+    border: "5px solid #08050514",
+    padding: "10px"
   },
   paper: {
     minHeight: "120px",
@@ -195,15 +199,60 @@ class ButtonBases extends React.Component {
       ]
     };
   }
-
+  unClickAll = () => {
+    let { areas } = this.state;
+    areas.map((value, index) => {
+      console.log("current areas checkmark", value, index);
+      let { checkMark } = value;
+      checkMark = false;
+      this.setState({ checkMark }, function() {
+        console.log("new state after removing checkmark", this.state);
+      }).then(console.log("do something after this..."));
+    });
+  };
   handleClick = key => {
-    this.setState({ clicked: !this.clicked });
-    const { areas } = this.state;
-    this.props.handleParentClick(key);
-    console.log("key -->", key);
-    areas[key].checkMark = !areas[key].checkMark;
+    let { areas } = this.state;
+    // let newAreas = areas.map((value, index) => {
+    //   console.log("current areas checkmark", value, index);
+    //   let { checkMark } = value;
+    //   console.log("key and index", key, index, value);
+    //   // if (key != index) {
+    //   //   checkMark = false;
+    //   //   this.setState({ checkMark }, function() {
+    //   //     console.log("new state after removing checkmark", this.state);
+    //   //   });
+    //   // } else
+    //   if (key == index) {
+    //     checkMark = true;
+    //     this.setState({ checkMark: true }, function() {
+    //       console.log("new state after keeping checkmark", this.state);
+    //     });
+    //   }
+    // });
+    areas.map((value, index) => {
+      console.log("value and index", value, index);
+      if (index == key) {
+        value.checkMark = true;
+      } else {
+        value.checkMark = false;
+      }
+    });
+    console.log("areas -->", areas);
     this.setState({ areas });
-    console.log(areas[key]);
+    this.props.handleParentClick(key);
+    // this.setState({ clicked: !this.clicked });
+    // // const { areas } = this.state;
+
+    // console.log("key -->", key);
+    // areas.map((value, index) => {
+    //   {
+    //     value.checkMark = false;
+    //   }
+    // });
+    // areas[key] = true;
+    // this.setState({ areas }, function() {
+    //   console.log("new areas ", this.state);
+    // });
   };
   render() {
     const { classes } = this.props;

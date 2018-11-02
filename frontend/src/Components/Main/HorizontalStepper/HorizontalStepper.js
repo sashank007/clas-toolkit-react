@@ -41,7 +41,11 @@ const componentStyle = {
 function getSteps() {
   return ["Select Area", "Select Sub Area", "Confirm Details"];
 }
-
+const snackBarMessages = [
+  "Please select an Area.",
+  "Please select a Sub Area.",
+  "Please select a location."
+];
 class HorizontalLinearStepper extends React.Component {
   state = {
     selectedFile: null,
@@ -51,7 +55,7 @@ class HorizontalLinearStepper extends React.Component {
     skipped: new Set(),
     area: null,
     subArea: null,
-    location: "",
+    location: null,
     fileUrl: null,
     attachmentId: null,
     userDetails: {
@@ -140,15 +144,7 @@ class HorizontalLinearStepper extends React.Component {
         return (
           <div style={componentStyle}>
             <DetailsForm detailsValue={this.handleSetDetailValue} />
-            {/* <input type="file" onChange={this.onDrop} />
-
-            <Button
-              variant="outlined"
-              component="span"
-              onClick={this.uploadFile}
-            >
-              Upload
-            </Button> */}
+            {/* <FileDroppa /> */}
           </div>
         );
       default:
@@ -157,15 +153,21 @@ class HorizontalLinearStepper extends React.Component {
   }
   validateAreaForm() {
     const { area } = this.state;
-    return area.length > 0;
+    return area != null;
   }
   validateSubAreaForm() {
     const { subArea } = this.state;
-    return subArea.length > 0;
+    const { area } = this.state;
+    const { location } = this.state;
+    if (area == "IT") {
+      console.log("validateSubArea", area);
+      return [location != null, snackBarMessages[2]];
+    }
+    return [subArea != null, snackBarMessages[1]];
   }
   validateDetailsForm() {
     const { message } = this.state;
-    return message.length > 0;
+    return message != null;
   }
   isStepOptional = step => {
     return step === 1;
@@ -178,18 +180,18 @@ class HorizontalLinearStepper extends React.Component {
       console.log("required fields not filled for area");
       this.setState({
         showSnackBar: true,
-        snackBarMessage: "Please pick an area."
+        snackBarMessage: snackBarMessages[0]
       });
       setTimeout(() => {
         this.setState({
           showSnackBar: false
         });
       }, 2500);
-    } else if (activeStep == 1 && !this.validateSubAreaForm()) {
+    } else if (activeStep == 1 && !this.validateSubAreaForm()[0]) {
       console.log("required fields not filled subarea");
       this.setState({
         showSnackBar: true,
-        snackBarMessage: "Please pick a sub area."
+        snackBarMessage: this.validateSubAreaForm()[1]
       });
       setTimeout(() => {
         this.setState({
@@ -242,37 +244,6 @@ class HorizontalLinearStepper extends React.Component {
 
     </tr>
     </table>`;
-    const customContent = `<div style="padding:5px;background-color:#f5f5f5;color:#4c4c4c;border-radius:7px;">
-    <h2
-      style="text-align:center;margin:10px;font-weight:30;">Support
-      Request Submission
-    </h2>
-    <div style="padding:left: 10px;">
-      <hr>
-        <p style = "font-size:15px;text-align:center">
-          A member of our support team will be in contact as soon as
-          possible, replying to tickets in the order they were received.
-          <br />
-          <br />
-        
-        </p>
-      </hr>
-      <p style = "font-size:15px;text-align:center">  Details of your ticket follow: ${
-        this.state.userDetails.message
-      }</p>
-    </div>
-    <div>
-      <p style="text-align:center;"}/>
-    
-      <img
-      style="width: 200px"
-
-        alt="College of Liberal Arts and Sciences"
-        src="https://clas-forms.asu.edu/sites/default/files/styles/panopoly_image_original/public/asu_liberalarts_horiz_rgb_maroongold_150ppi_1.png"
-      />
-  
-    </div>
-  </div>`;
     const originalPayload = {
       displayName: "Sai Sashank Tungaturthi",
       email: "stungatu@asu.edu",
@@ -460,10 +431,10 @@ class HorizontalLinearStepper extends React.Component {
         userDetails,
         attachmentId: state.attachmentId,
         fileUrl: state.filesUrl
-      },
-      function() {
-        console.log("set the state in horizontal stepper", this.state);
       }
+      // function() {
+      //   console.log("set the state in horizontal stepper", this.state);
+      // }
     );
   };
   handleSetInboxId = inboxId => {
@@ -487,22 +458,16 @@ class HorizontalLinearStepper extends React.Component {
       "Events",
       "Salesforce/Qualtrics"
     ];
-    console.log("inside horizontal stepper " + areaIndex);
     console.log(areas[areaIndex]);
     const newArea = areas[areaIndex];
     console.log("new area -->", newArea);
 
-    this.setState(
-      prevState => {
-        return {
-          area: newArea,
-          switchIndex: areaIndex
-        };
-      },
-      function() {
-        console.log("switch index changed", this.state);
-      }
-    );
+    this.setState(prevState => {
+      return {
+        area: newArea,
+        switchIndex: areaIndex
+      };
+    });
   };
   handleSetSubAreaLocation = subAreaLocation => {
     const { location } = this.state;
@@ -513,13 +478,13 @@ class HorizontalLinearStepper extends React.Component {
         return {
           location: newSubAreaLocation
         };
-      },
-      function() {
-        console.log(
-          "inside horizontal stepper sub area location --> ",
-          this.state
-        );
       }
+      // function() {
+      //   console.log(
+      //     "inside horizontal stepper sub area location --> ",
+      //     this.state
+      //   );
+      // }
     );
   };
   handleSetSubArea = subAreaValue => {
@@ -532,13 +497,13 @@ class HorizontalLinearStepper extends React.Component {
         return {
           subArea: newSubArea
         };
-      },
-      function() {
-        console.log(
-          "inside horizontal stepper sub area value --> ",
-          this.state
-        );
       }
+      // function() {
+      //   console.log(
+      //     "inside horizontal stepper sub area value --> ",
+      //     this.state
+      //   );
+      // }
     );
   };
 
@@ -608,7 +573,7 @@ class HorizontalLinearStepper extends React.Component {
                   </p>
                 </Typography>
                 <Button onClick={this.handleReset} className={classes.button}>
-                  Reset
+                  Create a new form
                 </Button>
               </div>
             ) : (
@@ -646,6 +611,7 @@ class HorizontalLinearStepper extends React.Component {
                   >
                     {activeStep === steps.length - 1 ? "Finish" : "Next"}
                   </Button>
+
                   {showSnackBar && <FadeSnackBar message={snackBarMessage} />}
                 </div>
               </div>

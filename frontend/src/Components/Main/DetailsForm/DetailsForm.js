@@ -6,6 +6,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 import FileDropper from "../FileDrop/FileDrop";
 import FileDroppa from "../FileDroppa/FileDroppa";
+import Main from "../FileDroppa/FileDroppa";
 const styles = theme => ({
   container: {
     display: "block",
@@ -201,8 +202,8 @@ class DetailsForm extends React.Component {
             shrink: true
           }}
         />
-        <FileDropper sendAttachment={this.handleSendAttachment} />
-        {/* <FileDroppa /> */}
+        {/* <FileDropper sendAttachment={this.handleSendAttachment} /> */}
+        <FileDroppa />
       </form>
     );
   }
