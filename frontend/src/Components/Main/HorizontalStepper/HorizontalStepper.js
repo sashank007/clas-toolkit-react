@@ -7,8 +7,8 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import AreaForm from "./AreaForm/AreaForm";
-import SubAreaForm from "../SubAreaForm/SubAreaForm";
-import DetailsForm from "../DetailsForm/DetailsForm";
+import SubAreaForm from "./SubAreaForm/SubAreaForm";
+import DetailsForm from "./DetailsForm/DetailsForm";
 import FadeSnackBar from "../FadeSnackBar/FadeSnackBar";
 import axios from "axios";
 const styles = theme => ({
